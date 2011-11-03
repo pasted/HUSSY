@@ -1,0 +1,81 @@
+:javascript
+  $(function() {
+    $( "#patient_date_of_death" ).datepicker();
+  });
+= form_for(@patient) do |f|
+  - if @patient.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@patient.errors.count, "error")
+        prohibited this patient from being saved:
+      %ul
+        - @patient.errors.full_messages.each do |msg|
+          %li= msg
+  %fieldset
+    .field
+      = f.label :current_state
+      %br/
+      = f.select :current_state, Patient::AVAILABLE_STATES
+      = f.hidden_field :user_id, #{current_user.id}
+    .field
+      = f.label :nhs_number, "NHS Number"
+      %br/
+      = f.text_field :nhs_number_1, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_2')"
+      = f.text_field :nhs_number_2, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_3')"
+      = f.text_field :nhs_number_3, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_4')"
+      \-
+      = f.text_field :nhs_number_4, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_5')"
+      = f.text_field :nhs_number_5, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_6')"
+      = f.text_field :nhs_number_6, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_7')"
+      \- 
+      = f.text_field :nhs_number_7, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_8')"
+      = f.text_field :nhs_number_8, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_9')"
+      = f.text_field :nhs_number_9, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_10')"
+      = f.text_field :nhs_number_10, :size => 1
+    .field
+      = f.label :initials
+      %br/
+      = f.text_field :initials
+    .field
+      = f.label :postcode
+      %br/
+      = f.text_field :postcode
+    .field
+      = f.label :town_of_birth
+      %br/
+      = f.text_field :town_of_birth
+    .field
+      = f.label :sex
+      %br/
+      = f.select :sex, Patient::AVAILABLE_GENDERS
+    .field
+      = f.label :year_of_birth
+      %br/
+      = f.text_field :year_of_birth
+    .field
+      = f.label :mortality
+      %br/
+      = f.select :mortality, Patient::AVAILABLE_MORTALITY_OPTIONS
+    .field
+      = f.label :date_of_death
+      %br/
+      = f.text_field :date_of_death
+    .field
+      = f.label :cause_of_death
+      %br/
+      = f.text_field :cause_of_death
+    .field
+      = f.label :dod_unknown
+      %br/
+      = f.check_box :dod_unknown
+    .field
+      = f.label :ethnicity_id
+      %br/
+      = f.select :ethnicity_id, options_from_collection_for_select(@ethnicities, :id, :description)
+    .field
+      = f.label :ethnicity_other
+      %br/
+      = f.text_field :ethnicity_other
+  %fieldset
+    .actions
+      = f.submit

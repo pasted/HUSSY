@@ -1,0 +1,262 @@
+:javascript 
+  $(function() {
+    var these_tabs = $("#consultation_tabs").tabs();
+    var tab_array = ["consultation_tabs_a","consultation_tabs_b","consultation_tabs_c","consultation_tabs_d","consultation_tabs_e","consultation_tabs_f", "consultation_tabs_g"];
+      $(".ui-tabs-panel").each(function(i){
+        var totalSize = $(".ui-tabs-panel").size() -1;
+          if (i != totalSize) {
+            next_index = i + 1;
+            next = tab_array[next_index];
+            $(this).append("<a href='#' class='next-tab mover' rel='" + next + "'>Next </a>");
+           }
+          if (i == totalSize) {
+            $(this).append("<input type='submit' class='submit-tab submitter' value='Submit'>");
+          }
+          if (i != 0) {
+            prev_index = i - 1;
+            prev = tab_array[prev_index];
+            $(this).append("<a href='#' class='prev-tab mover' rel='" + prev + "'> Prev</a>");
+          }
+  	
+        });
+  	
+        $('.next-tab, .prev-tab').click(function() {
+          these_tabs.tabs('select', $(this).attr("rel"));
+          return false;
+          });
+    $( "#consultation_patient_date_of_death" ).datepicker();
+    $( "#consultation_notification_date" ).datepicker();
+    $( "#consultation_consulted_date" ).datepicker();
+   
+    $( "#consultation_admissions_attributes_0_date_admitted" ).datepicker();
+    $( "#consultation_admissions_attributes_0_date_discharged" ).datepicker();
+  });
+  
+= form_for(@consultation) do |f|
+  - if @consultation.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@consultation.errors.count, "error")
+        prohibited this consultation from being saved:
+      %ul
+        - @consultation.errors.full_messages.each do |msg|
+          %li= msg
+  #consultation_tabs
+    %ul
+      %li{:title => "Details"}
+        %a#consultation_tabs_a_link{:href => "#consultation_tabs_a"} Details
+      %li{:title => "Patient History"}
+        %a#consultation_tabs_b_link{:href => "#consultation_tabs_b"} History
+      %li{:title => "Contacts"}
+        %a#consultation_tabs_c_link{:href => "#consultation_tabs_c"} Contacts
+      %li{:title => "Clinical Features"}
+        %a#consultation_tabs_d_link{:href => "#consultation_tabs_d"} Clinical
+      %li{:title => "Micorbiology Laboratory Investigations"}
+        %a#consultation_tabs_e_link{:href => "#consultation_tabs_e"} Micobiology
+      %li{:title => "Management"}
+        %a#consultation_tabs_f_link{:href => "#consultation_tabs_f"} Management
+      %li{:title => "Outcome by Discharge"}
+        %a#consultation_tabs_g_link{:href => "#consultation_tabs_g"} Outcome
+    #consultation_tabs_a
+      .left_field
+        = f.label :consulted_date, "Consultation date"
+      .right_field
+        = f.text_field :consulted_date
+      .left_field
+        = f.label :current_state
+      .right_field
+        = f.select :current_state, Consultation::AVAILABLE_STATES, :prompt => "Select a status"
+      = render @consultation.medic
+      %fieldset
+        %legend Has the patient been referred to/from another centre?
+        = render @consultation.referrals
+      %fieldset
+        %legend Admission details
+        = f.fields_for :admissions do |admission_form|
+          .left_field
+            = admission_form.label :date_admitted
+          .right_field
+            = admission_form.text_field :date_admitted
+          .left_field
+            = admission_form.label :date_discharged
+          .right_field
+            = admission_form.text_field :date_discharged
+          .left_field
+            = admission_form.label :hospital_id
+          .right_field
+            = admission_form.select :hospital_id, options_from_collection_for_select(@hospitals, :id, :name)
+          .left_field
+            = admission_form.label :itu_admitted, "has this patient been admitted to ITU?"
+          .right_field
+            = admission_form.select :itu_admitted, @options, :prompt => "Select one"
+          .left_field
+            = admission_form.label :itu_date, "Date admitted to ITU"
+          .right_field
+            = admission_form.date_select :itu_date, :order => [:day, :month, :year], :include_blank => :true
+          .left_field
+            = admission_form.label :itu_days, "Number of days in ITU"
+          .right_field
+            = admission_form.text_field :itu_days
+      %fieldset
+        %legend Patient Details
+        = f.fields_for :patient do |patient_form|
+          .left_field
+            = patient_form.label :nhs_number
+          .right_field
+            = patient_form.text_field :nhs_number_1, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_2')"
+            = patient_form.text_field :nhs_number_2, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_3')"
+            = patient_form.text_field :nhs_number_3, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_4')"
+            \-
+            = patient_form.text_field :nhs_number_4, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_5')"
+            = patient_form.text_field :nhs_number_5, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_6')"
+            = patient_form.text_field :nhs_number_6, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_7')"
+            \- 
+            = patient_form.text_field :nhs_number_7, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_8')"
+            = patient_form.text_field :nhs_number_8, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_9')"
+            = patient_form.text_field :nhs_number_9, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_10')"
+            = patient_form.text_field :nhs_number_10, :size => 1
+          .left_field
+            = patient_form.label :initials
+          .right_field
+            = patient_form.text_field :initials
+          .left_field
+            = patient_form.label :postcode
+          .right_field
+            = patient_form.text_field :postcode
+          .left_field
+            = patient_form.label :town_of_birth
+          .right_field
+            = patient_form.text_field :town_of_birth
+          .left_field
+            = patient_form.label :sex
+          .right_field
+            = patient_form.select :sex, Patient::AVAILABLE_GENDERS
+          .left_field
+            = patient_form.label :year_of_birth
+          .right_field
+            = patient_form.text_field :year_of_birth
+          .left_field
+            = patient_form.label :ethnicity_id
+          .right_field
+            = patient_form.select :ethnicity_id, options_from_collection_for_select(@ethnicities, :id, :description)
+          .left_field
+            = patient_form.label :ethnicity_other
+          .right_field
+            = patient_form.text_field :ethnicity_other
+    #consultation_tabs_b
+      = render @consultation.physicals
+      %fieldset
+        %legend Patient travel
+        .left_field
+          = f.label :traveled_recently, "Did the patient travel outside of the UK in the two weeks prior to this admission?"
+        .right_field
+          = f.select :traveled_recently, @options, :prompt => "Select one"
+        %ul#travel_list
+          = render @consultation.travels
+        %span.right_action_positive
+          = link_to "Add", "#add", :id => "add-travel"
+      %fieldset
+        %legend Prescriptions
+        %table#prescription-table
+          %th.clear
+          %th Prescribed?
+          %th Prescription date
+          = render :partial => 'prescriptions/prescription', :collection => @historical_prescriptions, :as => :prescription
+      %fieldset
+        %legend Historical conditions
+        .left_field Has the patient had HUS before?
+        = render @historical_hus_condition
+        .left_field Were there any pre-existing kidney diseases?
+        = render @historical_kidney_condition
+        .left_field Were there any pre-existing urinary tract infection related problems?
+        = render @historical_urinary_condition
+    #consultation_tabs_c
+      %fieldset
+        %legend List of contacts in the SAME household
+        %ul#contact_list
+          = render @consultation.relationships
+          %span.right_action_positive
+            = link_to "Add", "#add", :id => "add-contact"
+    #consultation_tabs_d
+      %fieldset
+        %legend Investigations observed
+        = render @reduced_heamoglobin_investigation
+        = render @reduced_platelet_investigation
+        = render @elevated_creatinine_investigation
+        = render @rbc_fragmentation_investigation
+      %fieldset
+        %legend Was HUS specifically diagnosed?
+        = render @present_hus_condition
+      %fieldset
+        %legend Did the patient have any of the following conditions?
+        %table
+          = render :partial => "conditions/line_condition", :object => @present_fever_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_diarrhoea_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_vtec_stool_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_vtec_serology_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_abdominal_pain_condition, :as => :condition
+          = render  :partial => "conditions/line_condition", :object =>@present_bloody_diarrhoea_condition, :as => :condition
+      %fieldset
+        %legend Has the patient developed any of the following?
+        %table
+          = render :partial => "conditions/line_condition", :object =>@present_oligo_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_septicaemia_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_hypertension_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_haemorrhage_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_seizures_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_cardiomyopathy_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_diabetes_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_influenza_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object =>@present_pneumo_condition, :as => :condition
+    #consultation_tabs_e
+      %fieldset
+        %legend Microbiology laboratory investigations
+        = render :partial => 'specimens/specimen', :collection => @consultation.specimens, :as => :specimen
+    #consultation_tabs_f
+      %fieldset
+        %legend Has the patient been treated with any of the following since onset of illness?
+        %table#prescription_table
+          %th.clear
+          %th Prescribed?
+          %th Prescription date
+          = render :partial => 'prescriptions/prescription', :collection => @present_prescriptions, :as => :prescription
+      %fieldset
+        %legend Did the patient undergo any of the following?
+        %table#treatment_table
+          %th.clear
+          %th Treated?
+          %th Start date
+          %th End date
+          = render :partial => 'treatments/line_treatment', :collection => @present_treatments, :as => :treatment
+    #consultation_tabs_g
+      %fieldset
+        %legend As far as indicated, please select from the following outcome categories
+        %table#outcome_table
+          %th.clear
+          %th Present?
+          %th Details
+          = render :partial => "outcomes/line_outcome", :object =>@present_full_recovery_outcome, :as => :outcome
+          = render :partial => "outcomes/line_outcome", :object =>@present_dialysis_dependent_outcome, :as => :outcome
+          = render :partial => "outcomes/line_outcome", :object =>@present_renal_impairment_outcome, :as => :outcome
+          = render :partial => "outcomes/line_outcome", :object =>@present_neurological_impairment_outcome, :as => :outcome
+          = render :partial => "outcomes/line_outcome", :object =>@present_hypertension_treatment_outcome, :as => :outcome
+          = render :partial => "outcomes/line_outcome", :object =>@present_other_outcome, :as => :outcome
+      %fieldset
+        %legend Patient status
+        = render :partial => "patients/status", :object =>@patient, :as => :patient
+      %fieldset
+        %legend Notification
+        .left_field
+          = f.label :notification, "Has the patient been notified to the Proper officer?"
+        .right_field
+          = f.select :notification, @options
+        .left_field
+          = f.label :notification_date
+        .right_field
+          = f.text_field :notification_date
+        .left_field
+          = f.label :notification_date_unknown
+        .right_field
+          = f.check_box :notification_date_unknown
+  .actions
+    = f.submit

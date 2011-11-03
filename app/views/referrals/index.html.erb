@@ -1,0 +1,29 @@
+<h1>Listing referrals</h1>
+
+<table>
+  <tr>
+    <th>Referred</th>
+    <th>Original admission date</th>
+    <th>Centre name</th>
+    <th>Consultant name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @referrals.each do |referral| %>
+  <tr>
+    <td><%= referral.referred %></td>
+    <td><%= referral.original_admission_date %></td>
+    <td><%= referral.centre_name %></td>
+    <td><%= referral.consultant_name %></td>
+    <td><%= link_to 'Show', referral %></td>
+    <td><%= link_to 'Edit', edit_referral_path(referral) %></td>
+    <td><%= link_to 'Destroy', referral, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Referral', new_referral_path %>

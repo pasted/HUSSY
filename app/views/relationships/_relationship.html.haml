@@ -1,0 +1,13 @@
+- prefix = "consultation[relationships_attributes][]"
+= fields_for prefix, relationship do |relationship_form|
+  %li.contact_item
+    %fieldset
+      %legend Contact
+      .left_field
+        = relationship_form.label :category, "Relationship to patient"
+      .right_field
+        = relationship_form.text_field :category
+      - contact = relationship.contact
+      = render :partial => 'contacts/contact', :contact => contact
+      %span.right_action_negative
+        = link_to("Remove", "#delete", :class => "delete-contact")

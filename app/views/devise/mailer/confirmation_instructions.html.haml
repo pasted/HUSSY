@@ -1,0 +1,17 @@
+#header
+  %div{:style => "float: right; margin-top: -110px; line-height: normal;"}
+    %h1{:style => "color: darkorange; font-family: verdana, arial, helvetica, sans-serif; font-size: 6em; margin-top: 20px; margin-bottom: 10px;"} HUSSy
+%div{:style => "clear:both; margin:10px;"}
+%div{:style => "font-family: verdana, arial, helvetica, sans-serif;"}
+  %p
+    Welcome #{@resource.email}!
+  %p
+    Your initial password is #{@resource.password}
+  %p After logging into the system, please change this password to your own, easily rememberable one.
+  %p However the password system does require a certain length and complexity - if you do not have an available password that meets the system requirements, please feel free to continue to use the one provided.
+  %p You can confirm your account through the link below:
+  %p= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
+%div{:style => "clear:both; margin:10px;"}
+%div{:style => "background:#FF8A00; font-family: verdana, arial, helvetica, sans-serif; text-align: center; margin-top: 20px; padding-top: 2px; padding-bottom: 3px; color: white; width: 100%;"}
+  %p
+    eFOSS [HPA #{h Date.today.year}]

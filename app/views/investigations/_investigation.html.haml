@@ -1,0 +1,13 @@
+= fields_for "consultation[investigations_attributes][]", investigation do |investigation_form|
+  %fieldset
+    .left_field
+      %h5= investigation.assay.name
+      = investigation_form.hidden_field :assay_id, #{investigation.assay.id}
+      = investigation.assay.unit
+    .right_field
+      - if investigation.assay.name == "Red blood cell fragmentation"
+        = investigation_form.select :value, @options_present_absent, :order => [:day, :month, :year], :include_blank => :true
+      - else
+        = investigation_form.text_field :value
+    .right_field
+      = investigation_form.date_select :date_of_test, :index => investigation.id || "", :order => [:day, :month, :year], :include_blank => :true

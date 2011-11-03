@@ -1,0 +1,28 @@
+.new_div
+  %h2 Sign up
+  - form_for @user, :url => '../../users/registrations/create' do |f|
+    - if @user.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(@user.errors.count, "error")
+          prohibited this role from being saved:
+        %ul
+          - @user.errors.full_messages.each do |msg|
+            %li= msg
+    %p= f.label :email
+    %p= f.text_field :email
+    %p= f.label :first_name, "First name"
+    %p= f.text_field :first_name
+    %p= f.label :last_name, "Last name"
+    %p= f.text_field :last_name
+    %fieldset.roles
+      %legend Roles
+      - for role in Role.all
+        %div
+          = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)
+          = h role.name
+    %p= f.label :password
+    %p= f.password_field :password, {:class => "password_check"}
+    %p= f.label :password_confirmation
+    %p= f.password_field :password_confirmation, {:class => "password_check"}
+    %p= f.submit "Sign up"

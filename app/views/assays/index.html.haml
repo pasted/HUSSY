@@ -1,0 +1,23 @@
+%h1 Listing assays
+%table
+  %tr
+    %th Id
+    %th Name
+    %th Unit
+    %th Category
+    %th Description
+    %td
+    %td
+    %td
+  - @assays.each do |assay|
+    %tr
+      %td= assay.id
+      %td= assay.name
+      %td= assay.unit
+      %td= assay.category
+      %td= assay.description
+      %td= link_to 'Show', assay
+      %td= link_to 'Edit', edit_assay_path(assay)
+      %td= link_to 'Destroy', assay, :confirm => 'Are you sure?', :method => :delete
+%br/
+= link_to 'New Assay', new_assay_path

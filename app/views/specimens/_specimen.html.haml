@@ -1,0 +1,65 @@
+= fields_for "consultation[specimens_attributes][]", specimen do |specimen_form|
+  %fieldset
+    .left_field
+      = specimen_form.label :stool_sample_submitted, "Has a stool specimen been submitted?"
+    .right_field
+      = specimen_form.select :stool_sample_submitted, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :stool_sample_date, "If yes, date of sample"
+    .right_field
+      = specimen_form.date_select :stool_sample_date, :index => specimen.id || "", :order => [:day, :month, :year], :include_blank => :true
+    .left_field
+      = specimen_form.label :stool_sample_lab, "Laboratory name"
+    .right_field
+      = specimen_form.text_field :stool_sample_lab
+  %fieldset
+    .left_field
+      = specimen_form.label :stool_reference, "If E.Coli 0157 was not isolated, was a stool specimen sent to the reference laboratory?"
+    .right_field
+      = specimen_form.select :stool_reference, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :stool_reference_date, "If yes, date of dispatch"
+    .right_field
+      = specimen_form.date_select :stool_reference_date, :index => specimen.id || "", :order => [:day, :month, :year], :include_blank => :true
+    .left_field
+      = specimen_form.label :stool_reference_date_unknown, "Date unknown"
+    .right_field
+      = specimen_form.check_box :stool_reference_date_unknown
+  %fieldset
+    .left_field
+      = specimen_form.label :serum_reference, "Has a serum specimen been sent to the reference laboratory?"
+    .right_field
+      = specimen_form.select :serum_reference, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :serum_reference_date, "If yes, date of sample"
+    .right_field
+      = specimen_form.date_select :serum_reference_date, :index => specimen.id || "", :order => [:day, :month, :year], :include_blank => :true
+    .left_field
+      = specimen_form.label :serum_reference_date_unknown, "Date unknown"
+    .right_field
+      = specimen_form.check_box :serum_reference_date_unknown
+  %fieldset
+    .left_field
+      = specimen_form.label :organism_identified, "Was an organism identified?"
+    .right_field
+      = specimen_form.select :organism_identified, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :antibodies_detected, "Were antibodies to O157 detected?"
+    .right_field
+      = specimen_form.select :antibodies_detected, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :organism_name, "Organism name"
+    .right_field
+      = specimen_form.text_field :organism_name
+    .left_field
+      = specimen_form.label :organism_serotype, "Organism serotype"
+    .right_field
+      = specimen_form.text_field :organism_serotype
+    .left_field
+      = specimen_form.label :organism_phagetype, "Organism phagetype"
+    .right_field
+      = specimen_form.text_field :organism_phagetype
+    .left_field
+      = specimen_form.label :molis_reference, "Molis reference, if applicable"
+    .right_field
+      = specimen_form.text_field :molis_reference

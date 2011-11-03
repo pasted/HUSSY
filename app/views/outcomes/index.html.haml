@@ -1,0 +1,13 @@
+%h1 Listing outcomes
+%table
+  %tr
+    %th
+    %th
+    %th
+  - @outcomes.each do |outcome|
+    %tr
+      %td= link_to 'Show', outcome
+      %td= link_to 'Edit', edit_outcome_path(outcome)
+      %td= link_to 'Destroy', outcome, :confirm => 'Are you sure?', :method => :delete
+%br/
+= link_to 'New Outcome', new_outcome_path

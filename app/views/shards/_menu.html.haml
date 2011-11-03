@@ -1,0 +1,15 @@
+= content_tag :div, :id => "left_sidebar" do
+  - if user_signed_in?
+    %p.local-title Navigation
+    %ul.local
+      %li
+        = link_to "New Patient", search_form_path
+      %li
+        = link_to "Patient List", patients_path
+      %li
+        = link_to "Consultation List", consultations_path
+  - else
+    %p.local-title Navigation
+    %ul.local
+      %li
+        = link_to "Sign in", new_user_session_path

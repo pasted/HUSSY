@@ -1,0 +1,42 @@
+= form_tag('search') do
+  %fieldset.search 
+    .field
+      = label_tag :nhs_number, "NHS Number"
+      %br/
+      = text_field_tag :nhs_number_1, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_2')"}
+      = text_field_tag :nhs_number_2, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_3')"}
+      = text_field_tag :nhs_number_3, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_4')"}
+      \-
+      = text_field_tag :nhs_number_4, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_5')"}
+      = text_field_tag :nhs_number_5, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_6')"}
+      = text_field_tag :nhs_number_6, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_7')"}
+      \- 
+      = text_field_tag :nhs_number_7, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_8')"}
+      = text_field_tag :nhs_number_8, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_9')"}
+      = text_field_tag :nhs_number_9, nil, {:size => 1, :onkeyup => "checkChar(1, this.id, 'nhs_number_10')"}
+      = text_field_tag :nhs_number_10, nil, {:size => 1}
+  %h2
+    OR
+    %br/
+  %fieldset.search
+    .field
+      = label_tag :initials
+      %br/
+      = text_field_tag :initials
+    .field
+      = label_tag :sex
+      %br/
+      = select_tag :sex, options_for_select(@genders), {:include_blank => true}
+    .field
+      = label_tag :year_of_birth
+      %br/
+      = text_field_tag :year_of_birth
+  .actions
+    = submit_tag "Search Patients"
+- if @empty_params
+  #error_explanation Search parameters not complete. The patient search requires either a NHS number or a combination of exact initials, year of birth and sex.
+- else
+  - if @patients
+    %fieldset.search
+      - @patients.each do |this_patient|
+        = render :partial => 'patient', :locals => {:patient => this_patient}

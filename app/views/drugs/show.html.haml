@@ -1,0 +1,16 @@
+%p#notice= notice
+%table
+  %tr
+    %th Name
+    %th Category
+    %th Comment
+  %tr
+    %td 
+      = @drug.name
+    %td 
+      = @drug.category
+    %td 
+      = @drug.comment
+= link_to 'Edit', edit_drug_path(@drug)
+|
+\#{link_to 'Back', drugs_path}

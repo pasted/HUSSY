@@ -1,0 +1,43 @@
+%h1 Listing users
+%table
+  %tr
+    %th Id
+    %th Email
+    %th First name
+    %th Last name
+    %th Sign in count
+    %th Roles
+    %th Current IP
+    %th Current sign in
+    %th Last IP
+    %th Last sign in
+    %th Created at
+    %th Updated at
+  - @users.each do |user|
+    %tr
+      %td= h user.id
+      %td= h user.email
+      %td= h user.first_name
+      %td= h user.last_name
+      %td= h user.sign_in_count
+      %td
+        - if user.roles.length > 0
+          - user.roles.each do |this_role|
+            %p
+              %b= h this_role.name
+        - else
+          %p
+            %b None
+      %td= h user.current_sign_in_ip
+      %td= h user.current_sign_in_at
+      %td= h user.last_sign_in_ip
+      %td= h user.last_sign_in_at
+      %td
+        %sub= h user.created_at
+      %td
+        %sub= h user.updated_at
+      %td.action= link_to 'Show', user
+      %td.action= link_to 'Edit', edit_user_path(user)
+      %td.action= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
+%br/
+%span.highlight_tab= link_to('Register', new_user_registration_path )

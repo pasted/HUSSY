@@ -1,0 +1,46 @@
+= fields_for "consultation[specimens_attributes][]", specimen do |specimen_form|
+  %fieldset
+    .left_field
+      = specimen_form.label :stool_sample_submitted
+    .right_field
+      = specimen_form.select :stool_sample_submitted, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :stool_sample_date
+    .right_field
+      = specimen_form.date_select :stool_sample_date, :index => specimen.id || "", :include_blank => :true
+    .left_field
+      = specimen_form.label :stool_sample_lab
+    .right_field
+      = specimen_form.text_field :stool_sample_lab
+    .left_field
+      = specimen_form.label :stool_reference
+    .right_field
+      = specimen_form.select :stool_reference, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :stool_reference_date
+    .right_field
+      = specimen_form.date_select :stool_reference_date, :index => specimen.id || "", :include_blank => :true
+    .left_field
+      = specimen_form.label :stool_reference_date_unknown
+    .right_field
+      = specimen_form.check_box :stool_reference_date_unknown
+    .left_field
+      = specimen_form.label :serum_reference
+    .right_field
+      = specimen_form.select :serum_reference, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :serum_reference_date
+    .right_field
+      = specimen_form.date_select :serum_reference_date
+    .left_field
+      = specimen_form.label :serum_reference_date_unknown
+    .right_field
+      = specimen_form.check_box :serum_reference_date_unknown
+    .left_field
+      = specimen_form.label :organism_identified
+    .right_field
+      = specimen_form.select :organism_identified, @options, :prompt => "Select one"
+    .left_field
+      = specimen_form.label :antibodies_identified
+    .right_field
+      = specimen_form.select :antibodies_identified, @options, :prompt => "Select one"

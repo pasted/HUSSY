@@ -1,0 +1,17 @@
+= fields_for "consultation[patient_attributes]", patient do |patient_form|
+  %table
+    %tr
+      %th.clear
+      %th Date of death
+    %tr
+      %td
+        = patient_form.select :mortality, Patient::AVAILABLE_MORTALITY_OPTIONS
+      %td
+        = patient_form.text_field :date_of_death
+    %tr
+      %th.clear
+      %th Cause of death
+    %tr
+      %td
+      %td
+        = patient_form.text_area :cause_of_death, :rows => 4, :columns => 10    

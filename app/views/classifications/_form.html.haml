@@ -1,0 +1,15 @@
+= form_for(@classification) do |f|
+  - if @classification.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@classification.errors.count, "error")
+        prohibited this classification from being saved:
+      %ul
+        - @classification.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = f.label :name
+    %br/
+    = f.text_field :name
+  .actions
+    = f.submit

@@ -1,0 +1,34 @@
+- if user_signed_in?
+  .edit_div
+    %h1 Editing user
+    - form_for(@user) do |f|
+      = f.error_messages
+      %p
+        = f.label :email
+        %br/
+        = f.text_field :email
+      %p
+        = f.label :fname, "First name"
+        %br/
+        = f.text_field :first_name
+      %p
+        = f.label :lname, "Last name"
+        %br/
+        = f.text_field :last_name
+      - if current_user.role?("admin")
+        %fieldset.roles_fieldset
+          %legend Roles
+          - for role in Role.all
+            %div
+              = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)
+              = h role.name
+      %p= f.label :password
+      %p= f.password_field :password, {:class => "password_check"}
+      %p= f.label :password_confirmation
+      %p= f.password_field :password_confirmation, {:class => "password_check"}
+      %p
+        = f.submit 'Update'
+  %div{:style => "clear: both;"}
+    %span.highlight_tab= link_to 'Show', @user
+    |
+    %span.highlight_tab= link_to 'Back', users_path

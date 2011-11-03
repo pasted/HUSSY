@@ -1,0 +1,33 @@
+<%= form_for(@referral) do |f| %>
+  <% if @referral.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@referral.errors.count, "error") %> prohibited this referral from being saved:</h2>
+
+      <ul>
+      <% @referral.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :referred %><br />
+    <%= f.text_field :referred %>
+  </div>
+  <div class="field">
+    <%= f.label :original_admission_date %><br />
+    <%= f.date_select :original_admission_date %>
+  </div>
+  <div class="field">
+    <%= f.label :centre_name %><br />
+    <%= f.text_field :centre_name %>
+  </div>
+  <div class="field">
+    <%= f.label :consultant_name %><br />
+    <%= f.text_field :consultant_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

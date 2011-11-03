@@ -1,0 +1,27 @@
+= form_for(@medic) do |f|
+  - if @medic.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@medic.errors.count, "error")
+        prohibited this medic from being saved:
+      %ul
+        - @medic.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = f.label :position
+    %br/
+    = f.text_field :position
+  .field
+    = f.label :name
+    %br/
+    = f.text_field :name
+  .field
+    = f.label :telephone
+    %br/
+    = f.text_field :telephone
+  .field
+    = f.label :email
+    %br/
+    = f.text_field :email
+  .actions
+    = f.submit

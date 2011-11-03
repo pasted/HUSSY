@@ -1,0 +1,17 @@
+= fields_for "consultation[conditions_attributes][]", condition do |condition_form|
+  %fieldset
+    .left_field
+      %h5= condition.classification.name
+      = condition_form.hidden_field :classification_id, #{condition.classification.id}
+    .left_field
+      = condition_form.label :present
+    .right_field
+      = condition_form.select :present, @options, :prompt => "Select one"
+    .left_field
+      = condition_form.label :onset_date
+    .right_field
+      = condition_form.date_select :onset_date, :index => condition.id || "", :order => [:day, :month, :year], :include_blank => :true
+    .left_field
+      = condition_form.label :comment
+    .right_field
+      = condition_form.text_area :comment, :rows => 4, :columns => 10

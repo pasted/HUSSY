@@ -1,0 +1,9 @@
+= fields_for "consultation[prescriptions_attributes][]", prescription do |prescription_form|
+  %tr
+    %td.table_side_title
+      = prescription.drug.name
+      = prescription_form.hidden_field :category, #{prescription.category}
+    %td
+      = prescription_form.select :prescribed, @options, :prompt => "Select one"
+    %td
+      = prescription_form.date_select :prescribed_date, :index => prescription.id || "", :order => [:day, :month, :year], :include_blank => :true

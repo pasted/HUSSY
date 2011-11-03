@@ -1,0 +1,19 @@
+= fields_for "consultation[medic_attributes]", medic do |medic_form|
+  %fieldset
+    %legend Consultant details
+    .left_field
+      = medic_form.label :name, "Consultant name"
+    .right_field
+      = medic_form.text_field :name            
+    .left_field
+      = medic_form.label :telephone
+    .right_field
+      = medic_form.text_field :telephone
+    .left_field
+      = medic_form.label :position
+    .right_field
+      = medic_form.text_field :position
+    .left_field
+      = medic_form.label :email
+    .right_field
+      = medic_form.text_field :email

@@ -1,0 +1,29 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8\\", :content => "\\\"text/html;", "http-equiv" => "\\\"Content-Type\\"}/
+    %title HUS Study
+    = stylesheet_link_tag :all
+    = javascript_include_tag :all
+    = csrf_meta_tag
+    %link(rel='shortcut icon' href='https://www.hpa-bioinfosecure.org.uk/hussy/images/h_logo_16.ico')
+    %meta{:content => "Garan Jones", :name => "author"}/
+  %body
+    = render :partial => "shards/header"
+    = render :partial => "shards/login_bar"
+    = render :partial => "shards/menu"
+    #main_content
+      - if controller.controller_name == "sessions" && controller.action_name == "new"
+        = yield
+      - elsif user_signed_in?
+        = yield
+      - else
+        #login-notice
+          %p Please sign in for access.
+        = link_to "Sign in", new_user_session_path
+        = render "pages/welcome"
+    %div{:style => "clear:both; margin:10px;"}
+    #footer
+      %p
+        HUSSY [HPA 2011 - #{h Date.today.year}]
+    %div{:style => "clear: both;"}

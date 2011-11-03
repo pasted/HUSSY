@@ -1,0 +1,43 @@
+%p#notice= notice
+%p
+  %b Current state:
+  = @patient.current_state
+%p
+  %b NHS number:
+  = @patient.nhs_number
+%p
+  %b Initials:
+  = @patient.initials
+%p
+  %b Postcode:
+  = @patient.postcode
+%p
+  %b Town of birth:
+  = @patient.town_of_birth
+%p
+  %b Sex:
+  = @patient.sex
+%p
+  %b Year of birth:
+  = @patient.year_of_birth
+%p
+  %b Date of death:
+  = @patient.date_of_death
+%p
+  %b Cause of death:
+  = @patient.cause_of_death
+%p
+  %b Dod unknown:
+  = @patient.dod_unknown
+%p
+  %b Ethnicity:
+  = @patient.ethnicity_id
+%p
+  %b Ethnicity other:
+  = @patient.ethnicity_other
+%p
+  %b User:
+  = @patient.user_id
+= link_to 'Edit', edit_patient_path(@patient)
+|
+\#{link_to 'Back', patients_path}

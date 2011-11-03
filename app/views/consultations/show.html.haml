@@ -1,0 +1,95 @@
+%fieldset
+  .left_field Consulted Date
+  .right_field
+    = @consultation.consulted_date
+  .left_field Current State
+  .right_field
+    = @consultation.current_state
+%fieldset
+  .left_field Current state
+  .right_field
+    = @patient.current_state
+  .left_field NHS number
+  .right_field
+    = @patient.nhs_number
+  .left_field Initials
+  .right_field
+    = @patient.initials
+  .left_field Postcode
+  .right_field
+    = @patient.postcode
+  .left_field Town of birth
+  .right_field
+    = @patient.town_of_birth
+  .left_field Sex
+  .right_field
+    = @patient.sex
+  .left_field Year of birth
+  .right_field
+    = @patient.year_of_birth
+  .left_field Date of death
+  .right_field
+    = @patient.date_of_death
+  .left_field Cause of death
+  .right_field
+    = @patient.cause_of_death
+  .left_field Dod unknown
+  .right_field
+    = @patient.dod_unknown
+  .left_field Ethnicity
+  .right_field
+    = @patient.ethnicity_id
+  .left_field Ethnicity other
+  .right_field
+    = @patient.ethnicity_other
+%fieldset
+  .left_field Consultant name
+  .right_field
+    = @medic.name            
+  .left_field Consultant telephone
+  .right_field
+    = @medic.telephone
+  .left_field Consultant position
+  .right_field
+    = @medic.position
+  .left_field COnsultant email
+  .right_field
+    = @medic.email
+- @consultation.referrals.each do |this_referral|
+  %fieldset
+    .left_field Referred?
+    .right_field
+      = this_referral.referred
+    .left_field Referral admission date
+    .right_field
+      = this_referral.original_admission_date
+    .left_field Centre name
+    .right_field
+      = this_referral.centre_name
+    .left_field Referring consultant name
+    .right_field
+      = this_referral.consultant_name
+- @consultation.admissions.each do |this_admission|
+  %fieldset
+    .left_field Date admitted
+    .right_field
+      = this_admission.date_admitted
+    .left_field Date discharged
+    .right_field
+      = this_admission.date_discharged
+    .left_field Hospital
+    .right_field
+      = this_admission.hospital.name
+    .left_field Has this patient been admitted to ITU?
+    .right_field
+      = this_admission.itu_admitted
+    .left_field Date admitted to ITU
+    .right_field
+      = this_admission.itu_date
+    .left_field Number of days in ITU
+    .right_field
+      = this_admission.itu_days
+  
+= link_to 'Edit', edit_consultation_path(@consultation)
+|
+\#{link_to 'Back', consultations_path}

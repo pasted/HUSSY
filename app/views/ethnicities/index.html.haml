@@ -1,0 +1,21 @@
+%h1 Listing ethnicities
+%table
+  %tr
+    %th Ethnicity code
+    %th Group code
+    %th Group name
+    %th Description
+    %td
+    %td
+    %td
+  - @ethnicities.each do |ethnicity|
+    %tr
+      %td= ethnicity.code
+      %td= ethnicity.group_code
+      %td= ethnicity.group_name
+      %td= ethnicity.description
+      %td= link_to 'Show', ethnicity
+      %td= link_to 'Edit', edit_ethnicity_path(ethnicity)
+      %td= link_to 'Destroy', ethnicity, :confirm => 'Are you sure?', :method => :delete
+%br/
+= link_to 'New Ethnicity', new_ethnicity_path

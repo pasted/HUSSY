@@ -1,0 +1,14 @@
+= fields_for "consultation[travels_attributes][]", travel do |travel_form|
+  .left_field
+    = travel_form.label :visited
+  .right_field
+    = travel_form.text_field :visited
+  .left_field
+    = travel_form.label :arrived
+  .right_field
+    = travel_form.date_select :arrived
+  .left_field
+    = travel_form.label :departed
+  .right_field
+    = travel_form.date_select :departed
+  = link_to("Remove", "#delete", :class => "delete-travel")

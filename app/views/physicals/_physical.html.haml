@@ -1,0 +1,10 @@
+= fields_for "consultation[physicals_attributes][]", physical do |physical_form|
+  %fieldset
+    .left_field
+      %h5= physical.characteristic.name
+      = physical_form.hidden_field :characteristic_id, #{physical.characteristic.id}
+      = physical.characteristic.unit
+    .right_field
+      = physical_form.text_field :measure
+    .right_field
+      = physical_form.date_select :date_taken, :index => physical.id || "", :order => [:day, :month, :year], :include_blank => :true

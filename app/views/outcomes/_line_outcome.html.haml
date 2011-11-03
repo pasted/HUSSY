@@ -1,0 +1,9 @@
+= fields_for "consultation[outcomes_attributes][]", outcome do |outcome_form|
+  %tr
+    %td.table_side_title 
+      = outcome.result.name
+      = outcome_form.hidden_field :result_id, #{outcome.result.id}
+    %td
+      = outcome_form.select :present, @options, :prompt => "Select one"
+    %td
+      = outcome_form.text_field :details

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Referred:</b>
+  <%= @referral.referred %>
+</p>
+
+<p>
+  <b>Original admission date:</b>
+  <%= @referral.original_admission_date %>
+</p>
+
+<p>
+  <b>Centre name:</b>
+  <%= @referral.centre_name %>
+</p>
+
+<p>
+  <b>Consultant name:</b>
+  <%= @referral.consultant_name %>
+</p>
+
+
+<%= link_to 'Edit', edit_referral_path(@referral) %> |
+<%= link_to 'Back', referrals_path %>

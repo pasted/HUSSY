@@ -1,0 +1,31 @@
+%h1 Listing consultations
+%table
+  %tr
+    %th Id
+    %th Consulted date
+    %th Current state
+    %th Traveled recently
+    %th Patient id
+    %th Medic id
+    %th User id
+    %th Created at
+    %th Updated at
+    %td
+    %td
+    %td
+  - @consultations.each do |consultation|
+    %tr
+      %td= consultation.id
+      %td= consultation.consulted_date
+      %td= consultation.current_state
+      %td= consultation.traveled_recently
+      %td= consultation.patient_id
+      %td= consultation.medic_id
+      %td= consultation.user_id
+      %td= consultation.created_at
+      %td= consultation.updated_at
+      %td= link_to 'Show', consultation
+      %td= link_to 'Edit', edit_consultation_path(consultation)
+      %td= link_to 'Destroy', consultation, :confirm => 'Are you sure?', :method => :delete
+%br/
+= link_to 'New Consultation', new_consultation_path

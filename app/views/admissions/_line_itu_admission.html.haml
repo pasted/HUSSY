@@ -1,0 +1,8 @@
+= fields_for admissions do |admission_form|
+  %tr
+    %td
+      = admission_form.select :itu_admitted, @options, :prompt => "Select one"
+    %td
+      = admission_form.date_select :itu_date, :index => admission.id || "", :order => [:day, :month, :year], :include_blank => :true
+    %td
+      = admission_form.text_field :itu_days

@@ -1,0 +1,18 @@
+- prefix = "consultation[travels_attributes][]"
+= fields_for prefix, travel do |travel_form|
+  %li.travel_item
+    %fieldset
+      .left_field
+        = travel_form.label :visited
+      .right_field
+        = travel_form.text_field :visited
+      .left_field
+        = travel_form.label :arrived
+      .right_field
+        = travel_form.date_select :arrived, :index => travel.id || "", :order => [:day, :month, :year], :include_blank => :true
+      .left_field
+        = travel_form.label :departed
+      .right_field
+        = travel_form.date_select :departed, :index => travel.id || "", :order => [:day, :month, :year], :include_blank => :true
+      %span.right_action_negative
+        = link_to("Remove", "#delete", :class => "delete-travel")

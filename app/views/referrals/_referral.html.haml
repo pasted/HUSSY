@@ -1,0 +1,17 @@
+= fields_for "consultation[referrals_attributes][]", referral do |referral_form|
+  .left_field
+    = referral_form.label :referred
+  .right_field
+    = referral_form.select :referred, @options, :prompt => "Select one"
+  .left_field
+    = referral_form.label :original_admission_date
+  .right_field
+    = referral_form.date_select :original_admission_date, {:index => referral.id || "", :order => [:day, :month, :year], :include_blank => :true}
+  .left_field
+    = referral_form.label :centre_name
+  .right_field
+    = referral_form.text_field :centre_name
+  .left_field
+    = referral_form.label :consultant_name
+  .right_field
+    = referral_form.text_field :consultant_name

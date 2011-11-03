@@ -1,0 +1,21 @@
+%div.patient_result_header 
+  = patient.id
+.left_field
+  NHS Number :
+.right_field
+  = patient.nhs_number
+.left_field
+  Initials :
+.right_field
+  = patient.initials
+.left_field
+  Year of birth :
+.right_field
+  = patient.year_of_birth
+.left_field
+  Sex :
+.right_field
+  = patient.sex
+.right_field
+  %span.highlight_action
+    = link_to 'Add Consultation', new_consultation_path, :patient => patient

@@ -1,0 +1,22 @@
+- prefix = "consultation[relationships_attributes][][contact_attributes]"
+= fields_for prefix, contact do |contact_fields|
+  .left_field
+    = contact_fields.label :name, "Name of contact"
+  .right_field
+    = contact_fields.text_field :name
+  .left_field
+    = contact_fields.label :bloody_diarrhoea, "Bloody diarrhoea or diarrhoea within the last two weeks?"
+  .right_field
+    = contact_fields.select :bloody_diarrhoea, @options
+  .left_field
+    = contact_fields.label :onset_bloody_diarrhoea
+  .right_field
+    = contact_fields.date_select :onset_bloody_diarrhoea, :order => [:day, :month, :year], :include_blank => :true
+  .left_field
+    = contact_fields.label :hus, "Previous history of HUS?"
+  .right_field
+    = contact_fields.select :hus, @options
+  .left_field
+    = contact_fields.label :onset_hus
+  .right_field
+    = contact_fields.date_select :onset_hus, :order => [:day, :month, :year], :include_blank => :true

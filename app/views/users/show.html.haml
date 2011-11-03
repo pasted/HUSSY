@@ -1,0 +1,22 @@
+%p
+  %b Id:
+  = h @user.id
+%p
+  %b Email:
+  = h @user.email
+%p
+  %b First name:
+  = h @user.first_name
+%p
+  %b Last name:
+  = h @user.last_name
+%p
+  %b Role:
+  - @user.roles.each do |this_role|
+    = h this_role.name
+%p
+  %b Confirmed at:
+  = h @user.confirmed_at
+%span.highlight_span= link_to 'Edit', edit_user_path(@user)
+|
+%span.highlight_tab= link_to 'Back', users_path
