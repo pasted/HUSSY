@@ -1,0 +1,86 @@
+<% if user_signed_in? && current_user.role?('admin') %>
+	<script>       
+		$(function() {
+			$("#admin_tabs").tabs();
+		});
+	</script>
+
+	<h2>Administration</h2><br />
+	<div id="admin_tabs">
+		<ul>
+			<li ><a href="#admin_tabs_a">Menu Items</a></li>
+			<li ><a href="#admin_tabs_b">Users</a></li>
+
+		</ul>	
+		<div id="admin_tabs_a">
+			<fieldset>
+				<legend>Menu items</legend>
+					<ul>
+					<li><%= link_to "List properties", properties_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Classifications</legend>
+					<ul>
+					<li><%= link_to "List classifications", classifications_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Drugs</legend>
+					<ul>
+					<li><%= link_to "List drugs", drugs_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Assays</legend>
+					<ul>
+					<li><%= link_to "List assays", assays_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Characteristics</legend>
+					<ul>
+					<li><%= link_to "List characteristics", characteristics_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Ethnicities</legend>
+					<ul>
+					<li><%= link_to "List Ethnicities", ethnicities_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Hospitals</legend>
+					<ul>
+					<li><%= link_to "List Hospitals", hospitals_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Therapies</legend>
+					<ul>
+					<li><%= link_to "List Therapies", therapies_path %></li>
+					</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Results</legend>
+					<ul>
+					<li><%= link_to "List Results", results_path %></li>
+					</ul>
+			</fieldset>
+		</div>
+		<div id="admin_tabs_b">
+			<fieldset>
+				<legend>Users</legend>
+					<ul>
+					<li><%= link_to "List users", users_path %></li>
+					<li><%= link_to "Manage roles", roles_path %></li>
+					</ul>
+		
+			</fieldset>
+		</div>
+
+		<div style="clear:both; margin:10px;"></div>
+	</div>
+<% else %>
+	NO ACCESS
+<% end %>
