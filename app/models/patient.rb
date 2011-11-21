@@ -32,7 +32,7 @@ class Patient < ActiveRecord::Base
 	attr_encrypted :nhs_number, :key => LOCK
 	attr_encrypted :initials, :key => LOCK
 	attr_encrypted :postcode, :key => LOCK
-	attr_encrypted :town_of_birth, :key => LOCK
+	attr_encrypted :town_of_residence, :key => LOCK
 	attr_encrypted :sex, :key => LOCK
 	attr_encrypted :year_of_birth, :key => LOCK
 	attr_encrypted :mortality, :key => LOCK
@@ -41,12 +41,14 @@ class Patient < ActiveRecord::Base
 	attr_encrypted :ethnicity_other, :key => LOCK
 	
 	#Virtual attributes
-	attr_accessor :nhs_number_1, :nhs_number_2, :nhs_number_3, :nhs_number_4, :nhs_number_5, :nhs_number_6, :nhs_number_7, :nhs_number_8, :nhs_number_9, :nhs_number_10
-	attr_accessible  :nhs_number_1, :nhs_number_2, :nhs_number_3, :nhs_number_4, :nhs_number_5, :nhs_number_6, :nhs_number_7, :nhs_number_8, :nhs_number_9, :nhs_number_10
+	attr_accessor :digit_1, :digit_2, :digit_3, :digit_4, :digit_5
+	attr_accessor :digit_6, :digit_7, :digit_8, :digit_9, :digit_10
+	attr_accessible :digit_1, :digit_2, :digit_3, :digit_4, :digit_5
+	attr_accessible :digit_6, :digit_7, :digit_8, :digit_9, :digit_10
 	
 	
 	#mass-assignment 
-	attr_accessible :current_state, :nhs_number, :initials, :postcode, :town_of_birth, :sex, :year_of_birth, :mortality, :date_of_death, :cause_of_death, :dod_unknown, :ethnicity_other, :ethnicity_id, :user_id
+	attr_accessible :current_state, :nhs_number, :initials, :postcode, :town_of_residence, :sex, :year_of_birth, :mortality, :date_of_death, :cause_of_death, :dod_unknown, :ethnicity_other, :ethnicity_id, :user_id
 	#before_validation :make_nhs_number
 	
 	#Virtual attribute validation
@@ -72,9 +74,9 @@ class Patient < ActiveRecord::Base
 	
 	def make_nhs_number
 		#Compact the ten virtual attributes into the Patient.nhs_number
-		nhs_number = [self.nhs_number_1.to_s, self.nhs_number_2.to_s, self.nhs_number_3.to_s, self.nhs_number_4.to_s, self.nhs_number_5.to_s, self.nhs_number_6.to_s, self.nhs_number_7.to_s, self.nhs_number_8.to_s, self.nhs_number_9.to_s, self.nhs_number_10.to_s].join
-		if nhs_number.length == 10
-			self.nhs_number = nhs_number	
+		nhs_digits = [self.digit_1.to_s, self.digit_2.to_s, self.digit_3.to_s, self.digit_4.to_s, self.digit_5.to_s, self.digit_6.to_s, self.digit_7.to_s, self.digit_8.to_s, self.digit_9.to_s, self.digit_10.to_s].join
+		if nhs_digits.length == 10
+			self.nhs_number = nhs_digits
 		end
 	end
 	
@@ -86,48 +88,46 @@ class Patient < ActiveRecord::Base
 		#Split the NHS number for this patient into the 10 seperate virtual attributes, Patient.nhs_number_*
 		#return true if no errors
 		#return false otherwise
-		this_number_array = self.nhs_number.split(//)
-		begin
-			self.nhs_number_1 = this_number_array[0]
-			self.nhs_number_2 = this_number_array[1]
-			self.nhs_number_3 = this_number_array[2]
-			self.nhs_number_4 = this_number_array[3]
-			self.nhs_number_5 = this_number_array[4]
-			self.nhs_number_6 = this_number_array[5]
-			self.nhs_number_7 = this_number_array[6]
-			self.nhs_number_8 = this_number_array[7]
-			self.nhs_number_9 = this_number_array[8]
-			self.nhs_number_10 = this_number_array[9]
-		
-		rescue
-	
-		end
+		if self.nhs_number
+		  this_number_array = self.nhs_number.split(//)
+		  self.digit_1 = this_number_array[0]
+		  self.digit_2 = this_number_array[1]
+		  self.digit_3 = this_number_array[2]
+		  self.digit_4 = this_number_array[3]
+		  self.digit_5 = this_number_array[4]
+		  self.digit_6 = this_number_array[5]
+		  self.digit_7 = this_number_array[6]
+		  self.digit_8 = this_number_array[7]
+		  self.digit_9 = this_number_array[8]
+		  self.digit_10 = this_number_array[9]
+		  
+	        end
 	end
 	
 	def upcase_attributes
 		#strip whitespace and upcase text strings
 		self.initials = self.initials ? self.initials.strip.upcase : nil
 		self.postcode = self.postcode ? self.postcode.strip.upcase : nil
-		self.town_of_birth = self.town_of_birth ? self.town_of_birth.strip.upcase : nil
+		self.town_of_residence = self.town_of_residence ? self.town_of_residence.strip.upcase : nil
 		self.cause_of_death = self.cause_of_death ? self.cause_of_death.strip.upcase : nil
 		self.ethnicity_other = self.ethnicity_other ? self.ethnicity_other.strip.upcase : nil
 	end
 	
 	
-	def check_identifiers
-		#Patient.search()	
+	#def check_identifiers
+			
 		
-	end
+	#end
 	
-	class << columns_hash['date_of_death']
-	    def type
-	      :date
-	    end
-	end
+	#class << columns_hash['date_of_death']
+	#    def type
+	#      :date
+	#    end
+	#end
 	
-	class << columns_hash['encrypted_date_of_death']
-	    def type
-	      :date	
-	    end
-	end
+	#class << columns_hash['encrypted_date_of_death']
+	#    def type
+	#      :date	
+	#    end
+	#end
 end

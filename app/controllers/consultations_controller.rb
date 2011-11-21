@@ -17,6 +17,59 @@ class ConsultationsController < ApplicationController
     @patient = @consultation.patient
     @medic = @consultation.medic
     
+    @present_hus_condition = @consultation.conditions.where(:category => :present, :classification_id => "1").first ? @consultation.conditions.where(:category => :present, :classification_id => "1").first : nil
+
+    @present_conditions = Array.new
+    @developed_conditions = Array.new
+   
+    @classifications = Classification.all
+    @classifications.each do |this_classification|
+    	    case this_classification.id
+    	    when 1..7
+    	    	    this_condition = @consultation.conditions.where(:category => :present, :classification_id => this_classification.id).first
+    	    	    if this_condition
+    	    	    	    @present_conditions.push(this_condition)
+    	            end
+    	    when 8..18
+    	    	    this_condition = @consultation.conditions.where(:category => :present, :classification_id => this_classification.id).first
+    	    	    if this_condition
+    	    	    	    @developed_conditions.push(this_condition)
+    	            end
+    	    end
+    end
+    
+    @drugs = Drug.all
+    @present_prescriptions = Array.new
+    @historical_prescriptions = Array.new
+    @drugs.each do |this_drug|
+    	    present_prescription = @consultation.prescriptions.where(:category => :present, :drug_id => this_drug.id).first
+    	    historical_prescription = @consultation.prescriptions.where(:category => :historical, :drug_id => this_drug.id).first
+    	    if present_prescription != nil
+    	      @present_prescriptions.push(present_prescription)
+            end
+            if historical_prescription != nil
+    	      @historical_prescriptions.push(historical_prescription)
+            end
+    end
+    
+    @therapies = Therapy.all
+    @present_treatments = Array.new
+    @therapies.each do |this_therapy|
+    	    this_treatment = @consultation.treatments.where(:therapy_id => this_therapy.id).first
+    	    if this_treatment != nil
+    	      @present_treatments.push(this_treatment)
+            end
+    end
+    
+    @results = Result.all
+    @present_outcomes = Array.new
+    @results.each do |this_result|
+    	    this_outcome = @consultation.outcomes.where(:result_id => this_result.id).first 
+    	    if this_outcome != nil
+    	     @present_outcomes.push(this_outcome)
+            end
+    end
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @consultation }
@@ -27,7 +80,7 @@ class ConsultationsController < ApplicationController
   # GET /consultations/new.xml
   def new
     @user = current_user
- 
+    
     @patient = Patient.find(params[:patient_id])
     @patient.split_nhs_number
     
@@ -38,12 +91,13 @@ class ConsultationsController < ApplicationController
    
     @consultation.admissions.build
     @consultation.build_medic
-    @consultation.treatments.build
+    
     @consultation.travels.build
     @consultation.relationships.build.build_contact
     @consultation.outcomes.build
     @consultation.referrals.build
     @consultation.specimens.build
+    
 
     @consultation.patient = @patient
     
@@ -81,6 +135,9 @@ class ConsultationsController < ApplicationController
     
     #Conditions for section 3.5, 3.6 and 3.7
     #Every Consulation will have these 3 historical conditions
+    
+    
+    
     @historical_hus_condition = Condition.new
     @historical_kidney_condition = Condition.new
     @historical_urinary_condition = Condition.new
@@ -102,11 +159,13 @@ class ConsultationsController < ApplicationController
     @consultation.conditions.push(@historical_kidney_condition)
     @consultation.conditions.push(@historical_urinary_condition)
     
+    
+    
     #Section D : Clinical features
     #Investigations
     #Pre-build to populate the list with all relevant Assays
     #Could save time by just iterating over Assay.all array but instead exclusively picking the Assays mentioned (in case new Assays added later)
-    
+    #Needs to be refactored - move into the models
     @reduced_heamoglobin_investigation = Investigation.new
     @reduced_platelet_investigation = Investigation.new
     @elevated_creatinine_investigation = Investigation.new
@@ -234,11 +293,15 @@ class ConsultationsController < ApplicationController
     @present_treatments = Array.new
     @therapies.each do |this_therapy|
     	    this_treatment = Treatment.new
+    	    this_treatment.therapy_id = this_therapy.id
     	    this_treatment.therapy = this_therapy
-    	    @consultation.treatments.push(this_treatment)
-    	    @present_treatments.push(this_treatment)
+    	    if this_treatment.therapy.name
+    	    	    @consultation.treatments.push(this_treatment)
+    	    	    @present_treatments.push(this_treatment)
+    	    end
+    	    
     end
-
+    
     #Section G : Outcome by discharge
     @present_full_recovery_outcome = Outcome.new
     @present_dialysis_dependent_outcome = Outcome.new
@@ -288,17 +351,72 @@ class ConsultationsController < ApplicationController
     @height = Characteristic.find_by_name("Height")
     @weight = Characteristic.find_by_name("Weight")
     @options = Array["UNKNOWN", "YES", "NO"]
+    @options_present_absent = Array["Present", "Absent"]
     
-    #@historical_hus_condition = Condition.search(:name => "Haemolytic-Uraemic Syndrome")
-    #@historical_kidney_condition = @consultation.conditions.find_by_name("Kidney disease")
-    #@historical_urinary_condition = @consultation.conditions.find_by_name("Urinary tract infection")
+    #Alot of refactoring required here - move into models
+    hus_classification = Classification.find_by_name("Haemolytic-Uraemic Syndrome")
+    kidney_classification = Classification.find_by_name("Kidney disease")
+    urinary_classification = Classification.find_by_name("Urinary tract infection")
+
+    fever_classification = Classification.find_by_name('Fever') 
+    oligo_classification = Classification.find_by_name('Oligo/anuria') 
+    diarrhoea_classification = Classification.find_by_name('Diarrhoea')
+    vtec_stool_classification = Classification.find_by_name('Confirmed VTEC infection by stool sample')
+    haemorrhage_classification = Classification.find_by_name('Major haemorrhage')
+    septicaemia_classification = Classification.find_by_name('Septicaemia')
+    hypertension_classification = Classification.find_by_name('Malignant hypertension')
+    vtec_serology_classification = Classification.find_by_name('Confirmed VTEC infection by serology')
+    abdominal_pain_classification = Classification.find_by_name('Abdominal pain')
+    bloody_diarrhoea_classification = Classification.find_by_name('Bloody Diarrhoea')   
+    seizures_classification = Classification.find_by_name('Seizures and other neurological involvement')
+    cardiomyopathy_classification = Classification.find_by_name('Cardiomyopathy')
+    diabetes_classification = Classification.find_by_name('Diabetes mellitus')
+    influenza_classification = Classification.find_by_name('Influenza-like illness')
+    pneumo_classification = Classification.find_by_name('Pneumococcus infection')
+    
+    @historical_hus_condition = Condition.where({:classification_id => hus_classification.id, :category => "historical", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @historical_kidney_condition = Condition.where({:classification_id => kidney_classification.id, :category => "historical", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @historical_urinary_condition = Condition.where({:classification_id => urinary_classification.id, :category => "historical", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    
+    reduced_heamoglobin_assay = Assay.find_by_name("Reduced haemoglobin")
+    reduced_platelet_assay = Assay.find_by_name("Reduced platelet count")
+    elevated_creatinine_assay = Assay.find_by_name("Elevated plasma creatinine")
+    rbc_fragmentation_assay = Assay.find_by_name("Red blood cell fragmentation")
+    
+    
+    
+    @reduced_heamoglobin_investigation = Investigation.where({:assay_id => reduced_heamoglobin_assay.id, :consultation_id => @consultation.id})
+    @reduced_platelet_investigation = Investigation.where({:assay_id => reduced_platelet_assay.id, :consultation_id => @consultation.id})
+    @elevated_creatinine_investigation = Investigation.where({:assay_id => elevated_creatinine_assay.id, :consultation_id => @consultation.id})
+    @rbc_fragmentation_investigation = Investigation.where({:assay_id => rbc_fragmentation_assay.id, :consultation_id => @consultation.id})
+    
+    @present_hus_condition = Condition.where({:classification_id => hus_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_fever_condition = Condition.where({:classification_id => fever_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_oligo_condition = Condition.where({:classification_id => oligo_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_diarrhoea_condition = Condition.where({:classification_id => diarrhoea_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_vtec_stool_condition = Condition.where({:classification_id => vtec_stool_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_haemorrhage_condition = Condition.where({:classification_id => haemorrhage_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_septicaemia_condition = Condition.where({:classification_id => septicaemia_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_hypertension_condition = Condition.where({:classification_id => hypertension_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_vtec_serology_condition = Condition.where({:classification_id => vtec_serology_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_abdominal_pain_condition = Condition.where({:classification_id => abdominal_pain_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_bloody_diarrhoea_condition = Condition.where({:classification_id => bloody_diarrhoea_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    
+    @present_seizures_condition = Condition.where({:classification_id => seizures_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_cardiomyopathy_condition = Condition.where({:classification_id => cardiomyopathy_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_diabetes_condition = Condition.where({:classification_id => diabetes_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_influenza_condition = Condition.where({:classification_id => influenza_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    @present_pneumo_condition = Condition.where({:classification_id => pneumo_classification.id, :category => "present", :conditionable_type => "Consultation", :conditionable_id => @consultation.id})
+    
   end
 
   # POST /consultations
   # POST /consultations.xml
   def create
     @user = current_user
-    @patient = Patient.find(params[:consultation][:patient_attributes][:id])
+
+    @patient = Patient.find(params[:consultation][:patient_attributes][:id]) 
+
     @patient.update_attributes(params[:consultation][:patient_attributes])
    
     @consultation = Consultation.new

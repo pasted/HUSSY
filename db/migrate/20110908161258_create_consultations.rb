@@ -1,6 +1,7 @@
 class CreateConsultations < ActiveRecord::Migration
   def self.up
     create_table :consultations do |t|
+      t.string :bpsu_number
       t.date :consulted_date
       t.string :current_state
       t.string :traveled_recently

@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.10'
 gem 'jquery-rails'
 gem 'simple-navigation'
-gem 'jquery-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -28,11 +27,13 @@ end
 gem "ZenTest", "~> 4.4.2"
 gem "autotest-rails", "~> 4.1.0"
 
+#ezcrypto for legacy VTEC database fields, attr_encrypted used elsewhere
+gem "ezcrypto"
 
 gem 'rb-inotify'
 gem 'libnotify'
 
-gem 'devise'
+gem 'devise', "1.4.7"
 gem 'cancan'
 gem 'cantango'
 

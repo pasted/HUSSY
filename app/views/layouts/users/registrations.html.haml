@@ -5,36 +5,33 @@
     %title HUS Study
     = stylesheet_link_tag :all
     = javascript_include_tag :defaults
-    = javascript_include_tag 'password_strength'
     :javascript
-	  var $j = jQuery.noConflict();
-	  
-	  $j(document).ready( function() {
-
-				//ADVANCED
-				$j(".password_check").passStrength({
-					shortPass: 		"top_shortPass",
-					badPass:		"top_badPass",
-					goodPass:		"top_goodPass",
-					strongPass:		"top_strongPass",
-					baseStyle:		"top_testresult",
-					userid:			"#user_email"
-				});
-				
-				
-
-
-
-	  });
-			
-        = csrf_meta_tag
+      var $j = jQuery.noConflict();
+      $j(document).ready( function() {
+        $j(".password_check").passStrength({ shortPass:  "top_shortPass", badPass:  "top_badPass", goodPass:  "top_goodPass", strongPass:  "top_strongPass", baseStyle:  "top_testresult", userid:  "#user_email"});
+      });		
+    = csrf_meta_tag
     %meta{:content => "Garan Jones", :name => "author"}/
   %body
-    **
-    
-    \#{render :partial => "shards/header"}
+    = render :partial => "shards/header"
+    = render :partial => "shards/login_bar"
+    = render :partial => "shards/menu"
     #main-content
-      = yield
+      - if controller.controller_name == "sessions" && controller.action_name == "new"
+        = yield
+      - elsif user_signed_in?
+        = yield
+      - else
+        #login_notice
+          %p 
+          Please
+          = link_to "Sign in", new_user_session_path
+          for access.
+          %p
+          = image_tag "email_1.png", :class => "email"
+          Please contact the
+          = mail_to "vtec@hpa.org.uk", "Administrators", :title => "Email the administrators"
+          at GEZI, Health Protection Services, HPA Colindale if you need to register for an account.
     %div{:style => "clear:both; margin:10px;"}
     #footer
       %p

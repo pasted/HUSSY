@@ -1,4 +1,5 @@
 %fieldset
+  %legend Consultation
   .left_field Consulted Date
   .right_field
     = @consultation.consulted_date
@@ -6,6 +7,7 @@
   .right_field
     = @consultation.current_state
 %fieldset
+  %legend Patient
   .left_field Current state
   .right_field
     = @patient.current_state
@@ -18,9 +20,9 @@
   .left_field Postcode
   .right_field
     = @patient.postcode
-  .left_field Town of birth
+  .left_field Town of residence
   .right_field
-    = @patient.town_of_birth
+    = @patient.town_of_residence
   .left_field Sex
   .right_field
     = @patient.sex
@@ -43,20 +45,22 @@
   .right_field
     = @patient.ethnicity_other
 %fieldset
+  %legend Consultant
   .left_field Consultant name
   .right_field
-    = @medic.name            
+    = @consultation.medic.name ? @consultation.medic.name : "NOT GIVEN"            
   .left_field Consultant telephone
   .right_field
-    = @medic.telephone
+    = @consultation.medic.telephone ? @consultation.medic.telephone : "NOT GIVEN"
   .left_field Consultant position
   .right_field
-    = @medic.position
-  .left_field COnsultant email
+    = @consultation.medic.position ? @consultation.medic.position : "NOT GIVEN"
+  .left_field Consultant email
   .right_field
-    = @medic.email
+    = @consultation.medic.email ? @consultation.medic.email : "NOT GIVEN"
 - @consultation.referrals.each do |this_referral|
   %fieldset
+    %legend Referral
     .left_field Referred?
     .right_field
       = this_referral.referred
@@ -71,6 +75,7 @@
       = this_referral.consultant_name
 - @consultation.admissions.each do |this_admission|
   %fieldset
+    %legend Hospital admission
     .left_field Date admitted
     .right_field
       = this_admission.date_admitted
@@ -79,7 +84,7 @@
       = this_admission.date_discharged
     .left_field Hospital
     .right_field
-      = this_admission.hospital.name
+      = this_admission.hospital ? this_admission.hospital.name : "NOT GIVEN" 
     .left_field Has this patient been admitted to ITU?
     .right_field
       = this_admission.itu_admitted
@@ -89,7 +94,242 @@
     .left_field Number of days in ITU
     .right_field
       = this_admission.itu_days
-  
+- @consultation.physicals.each do |this_physical|
+  %fieldset
+    %legend Physical characteristic
+    .left_field
+      %h5= this_physical.characteristic.name
+      = this_physical.characteristic.unit
+    .right_field
+      = this_physical.measure
+    .left_field Date taken
+    .right_field
+      = this_physical.date_taken
+%fieldset
+  %legend Travel
+  .left_field Traveled recently?
+  .right_field
+    = @consultation.traveled_recently
+  - @consultation.travels.each do |this_travel|
+    %fieldset
+      %legend Travel listing
+      .left_field Visited
+      .right_field
+        = this_travel.visited
+      .left_field Date arrived
+      .right_field
+        = this_travel.arrived
+      .left_field Date departed
+      .right_field
+        = this_travel.departed
+%fieldset
+  %legend Prescription
+  %table
+    %tr
+      %th Drug
+      %th Prescribed?
+      %th Date Prescribed
+      - @consultation.prescriptions.where(:category => "historical").each do |this_prescription|
+        %tr
+          %td.table_side_title
+            = this_prescription.drug ? this_prescription.drug.name : "NOT KNOWN"
+          %td
+            = this_prescription.prescribed
+          %td
+            = this_prescription.prescribed_date
+%fieldset
+  %legend Historical conditions
+  - @consultation.conditions.where(:category => "historical").each do |this_condition|
+    %fieldset
+      .left_field
+        %h5= this_condition.classification.name
+      .left_field Present?
+      .right_field
+        = this_condition.present
+      .left_field Category
+      .right_field
+        = this_condition.category
+      .left_field Onset date
+      .right_field
+        = this_condition.onset_date
+      .left_field Comment
+      .right_field
+        = this_condition.comment
+%fieldset
+  %legend Contacts
+  - @consultation.relationships.each do |this_relationship|
+    %fieldset
+      .left_field Relationship to patient
+      .right_field
+        = this_relationship.category
+      - if this_relationship.contact
+        .left_field Gender
+        .right_field
+          = this_relationship.contact.gender ? this_relationship.contact.gender : "NOT GIVEN"
+        .left_field Year of birth
+        .right_field
+          = this_relationship.contact.year_of_birth ? this_relationship.contact.year_of_birth : "NOT GIVEN"
+%fieldset
+  %legend Investigations
+  - @consultation.investigations.each do |this_investigation|
+    %fieldset
+      .left_field 
+        %h5= this_investigation.assay.name ? this_investigation.assay.name : "NOT GIVEN"
+        = this_investigation.assay.unit
+      .right_field
+        = this_investigation.value
+      .right_field
+        = this_investigation.date_of_test
+%fieldset
+  %legend Was HUS specifically diagnosed?
+  - if @present_hus_condition
+    .left_field
+      = @present_hus_condition.classification.name
+    .left_field Present?
+    .right_field
+      = @present_hus_condition.present
+    .left_field Onset date
+    .right_field
+      = @present_hus_condition.onset_date
+    .left_field Comment
+    .right_field
+      = @present_hus_condition.comment
+%fieldset
+  %legend Did the patient have any of the following conditions?
+  %table
+    = @present_conditions.inspect
+    - @present_conditions.each do |this_condition|
+      %tr
+        %td.table_side_title 
+          = this_condition.classification ? this_condition.classification.name : "None given"
+        %td
+          = this_condition.present
+        %td
+          = this_condition.onset_date
+%fieldset
+  %legend Has the patient developed any of the following?
+  %table
+    = @developed_conditions.inspect
+    - @developed_conditions.each do |this_condition|
+      %tr
+        %td.table_side_title 
+          = this_condition.classification ? this_condition.classification.name : "None given"
+        %td
+          = this_condition.present
+        %td
+          = this_condition.onset_date
+%fieldset
+  .left_field Has a stool specimen been submitted?
+  .right_field
+    = @consultation.specimens.first.stool_sample_submitted
+  .left_field If yes, date of sample
+  .right_field
+    = @consultation.specimens.first.stool_sample_date
+  .left_field Laboratory name
+  .right_field
+    = @consultation.specimens.first.stool_sample_lab
+%fieldset
+  .left_field If E.Coli 0157 was not isolated, was a stool specimen sent to the reference laboratory?
+  .right_field
+    = @consultation.specimens.first.stool_reference
+  .left_field If yes, date of dispatch
+  .right_field
+    = @consultation.specimens.first.stool_reference_date
+  .left_field Date unknown
+  .right_field
+    = @consultation.specimens.first.stool_reference_date_unknown
+%fieldset
+  .left_field Has a serum specimen been sent to the reference laboratory?
+  .right_field
+    = @consultation.specimens.first.serum_reference
+  .left_field If yes, date of sample
+  .right_field
+    = @consultation.specimens.first.serum_reference_date
+  .left_field Date unknown
+  .right_field
+    = @consultation.specimens.first.serum_reference_date_unknown
+%fieldset
+  .left_field Was an organism identified?
+  .right_field
+    = @consultation.specimens.first.organism_identified
+  .left_field Were antibodies to O157 detected?
+  .right_field
+    = @consultation.specimens.first.antibodies_detected
+  .left_field Organism name
+  .right_field
+    = @consultation.specimens.first.organism_name
+  .left_field Organism serotype
+  .right_field
+    = @consultation.specimens.first.organism_serotype
+  .left_field Organism phagetype
+  .right_field
+    = @consultation.specimens.first.organism_phagetype
+  .left_field Molis reference, if applicable
+  .right_field
+    = @consultation.specimens.first.molis_reference
+%fieldset
+  %legend Has the patient been treated with any of the following since onset of illness?
+  %table#prescription_table
+    %th.clear
+    %th Prescribed?
+    %th Prescription date
+    - @present_prescriptions.each do |this_prescription|
+      %tr
+        %td.table_side_title
+          = this_prescription.drug.name
+        %td
+          = this_prescription.prescribed
+        %td
+          = this_prescription.prescribed_date
+%fieldset
+  %legend Did the patient undergo any of the following?
+  %table#treatment_table
+    %th.clear
+    %th Treated?
+    %th Start date
+    %th End date
+    - @present_treatments.each do |this_treatment|
+      %tr
+        %td.table_side_title
+          = this_treatment.therapy.name
+        %td
+          = this_treatment.treated
+        %td
+          = this_treatment.date_start
+        %td
+          = this_treatment.date_end
+%fieldset
+  %legend As far as indicated, please select from the following outcome categories
+  %table#outcome_table
+    %th.clear
+    %th Present?
+    %th Details
+    - @present_outcomes.each do |this_outcome|
+      %tr
+        %td.table_side_title 
+          = this_outcome.result.name
+        %td
+          = this_outcome.present
+        %td
+          = this_outcome.details
+%fieldset
+  %legend Patient status
+  %table
+    %tr
+      %th Status
+      %th Date of death
+    %tr
+      %td
+        = @consultation.patient.mortality
+      %td
+        = @consultation.patient.date_of_death
+    %tr
+      %th.clear
+      %th Cause of death
+    %tr
+      %td
+      %td
+        = @consultation.patient.cause_of_death
 = link_to 'Edit', edit_consultation_path(@consultation)
 |
 \#{link_to 'Back', consultations_path}

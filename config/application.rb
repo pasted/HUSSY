@@ -30,9 +30,6 @@ module Hussy
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :'en_GB'
     
-    I18n.locale = :'en_GB'
-    I18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
-    I18n.reload!
 
     # JavaScript files you want as :defaults (application.js is always included).
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)

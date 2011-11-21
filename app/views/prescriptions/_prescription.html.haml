@@ -2,6 +2,7 @@
   %tr
     %td.table_side_title
       = prescription.drug.name
+      = prescription_form.hidden_field :drug_id, #{prescription.drug.id}
       = prescription_form.hidden_field :category, #{prescription.category}
     %td
       = prescription_form.select :prescribed, @options, :prompt => "Select one"

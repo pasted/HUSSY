@@ -8,6 +8,12 @@ function checkChar(limit, currentId, nextId) {
 }
 
 $(document).ready(function() {
+  $.ajaxSetup({
+        beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
+        }
+  });
+  
   $('a#add-travel').click(function() {
     $('#travel_list li:first').clone().find('input').val('').end().appendTo('#travel_list');
    });
@@ -28,6 +34,13 @@ $(document).ready(function() {
          $(this).parent().parent().remove();
         else
          alert('No contact items listed.');
+  });
+  
+  $("#consultation_hospital_tokens").tokenInput("/hospitals.json", {
+  		  crossDomain: false,
+  		  prePopulate: $("#consultation_hospital_tokens").data("pre"),
+  		  tokenLimit: 1,
+  		  theme: "facebook"
   });
 
 });

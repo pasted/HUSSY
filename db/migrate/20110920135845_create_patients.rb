@@ -5,7 +5,7 @@ class CreatePatients < ActiveRecord::Migration
       t.string :encrypted_nhs_number
       t.string :encrypted_initials
       t.string :encrypted_postcode
-      t.string :encrypted_town_of_birth
+      t.string :encrypted_town_of_residence
       t.string :encrypted_sex
       t.string :encrypted_year_of_birth
       t.string :encrypted_mortality

@@ -2,11 +2,11 @@ class HospitalsController < ApplicationController
   # GET /hospitals
   # GET /hospitals.xml
   def index
-    @hospitals = Hospital.all
+    @hospitals = Hospital.where("name ilike ?", "%#{params[:q]}%")
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @hospitals }
+      format.json { render :json => @hospitals.map(&:attributes) }
     end
   end
 

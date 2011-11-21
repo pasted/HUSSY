@@ -1,10 +1,10 @@
 .top_nav_container
   %ul#top_navigation
     - if user_signed_in?
-      <li #{h @home_klass} >#{link_to "Home", root_path}
+      <li #{h @home_klass.to_s} >#{link_to "Home", root_path}
       - if current_user.role?('ADMIN')
         <li #{h @admin_klass} >#{link_to "Admin", admin_path}
-      <li #{h @signout_klass} >#{link_to "Sign out", destroy_user_session_path}
+      <li #{h @signout_klass} >#{link_to "Sign out", destroy_user_session_path, :method => :delete}
     - else
       <li #{h @home_klass} >#{link_to "Home", root_path}
       <li #{h @signout_klass} >#{link_to "Sign in", new_user_session_path}

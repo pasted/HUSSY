@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20111102105529) do
   end
 
   create_table "consultations", :force => true do |t|
+    t.string   "bpsu_number"
     t.date     "consulted_date"
     t.string   "current_state"
     t.string   "traveled_recently"
@@ -92,7 +93,8 @@ ActiveRecord::Schema.define(:version => 20111102105529) do
   end
 
   create_table "contacts", :force => true do |t|
-    t.string   "name"
+    t.string   "gender"
+    t.string   "year_of_birth"
     t.string   "bloody_diarrhoea"
     t.date     "onset_bloody_diarrhoea"
     t.boolean  "onset_bloody_diarrhoea_unknown"
@@ -177,7 +179,7 @@ ActiveRecord::Schema.define(:version => 20111102105529) do
     t.string   "encrypted_nhs_number"
     t.string   "encrypted_initials"
     t.string   "encrypted_postcode"
-    t.string   "encrypted_town_of_birth"
+    t.string   "encrypted_town_of_residence"
     t.string   "encrypted_sex"
     t.string   "encrypted_year_of_birth"
     t.string   "encrypted_mortality"
@@ -192,7 +194,7 @@ ActiveRecord::Schema.define(:version => 20111102105529) do
   end
 
   create_table "physicals", :force => true do |t|
-    t.integer  "patient_id"
+    t.integer  "consultation_id"
     t.date     "date_taken"
     t.integer  "characteristic_id"
     t.string   "measure"
@@ -202,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20111102105529) do
   end
 
   create_table "prescriptions", :force => true do |t|
-    t.integer  "patient_id"
+    t.integer  "consultation_id"
     t.integer  "drug_id"
     t.string   "prescribed"
     t.date     "prescribed_date"
@@ -249,7 +251,7 @@ ActiveRecord::Schema.define(:version => 20111102105529) do
     t.datetime "updated_at"
   end
 
-  create_table "specimen", :force => true do |t|
+  create_table "specimens", :force => true do |t|
     t.string   "stool_sample_submitted"
     t.date     "stool_sample_date"
     t.string   "stool_sample_lab"

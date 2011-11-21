@@ -9,6 +9,7 @@
     %link(rel='shortcut icon' href='https://www.hpa-bioinfosecure.org.uk/hussy/images/h_logo_16.ico')
     %meta{:content => "Garan Jones", :name => "author"}/
   %body
+    - top_nav_formatter
     = render :partial => "shards/header"
     = render :partial => "shards/login_bar"
     = render :partial => "shards/menu"
@@ -18,9 +19,16 @@
       - elsif user_signed_in?
         = yield
       - else
-        #login-notice
-          %p Please sign in for access.
-        = link_to "Sign in", new_user_session_path
+        #login_notice
+          %p 
+          Please
+          = link_to "Sign in", new_user_session_path
+          for access.
+          %p
+          = image_tag "email_1.png", :class => "email"
+          Please contact the
+          = mail_to "vtec@hpa.org.uk", "Administrators", :title => "Email the administrators"
+          at GEZI, Health Protection Services, HPA Colindale if you need to register for an account.
         = render "pages/welcome"
     %div{:style => "clear:both; margin:10px;"}
     #footer

@@ -1,4 +1,4 @@
 class Treatment < ActiveRecord::Base
-	has_one :consultation
-	has_one :therapy
+	belongs_to :consultation
+	belongs_to :therapy
 end

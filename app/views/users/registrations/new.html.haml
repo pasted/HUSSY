@@ -1,5 +1,5 @@
-.new_div
-  %h2 Sign up
+#main_content
+  %h2 Register a new user
   - form_for @user, :url => '../../users/registrations/create' do |f|
     - if @user.errors.any?
       #error_explanation
@@ -17,6 +17,7 @@
     %p= f.text_field :last_name
     %fieldset.roles
       %legend Roles
+      %sup select one (multiple option is only here for testing)
       - for role in Role.all
         %div
           = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)

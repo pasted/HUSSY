@@ -3,6 +3,7 @@
     .left_field
       %h5= condition.classification.name
       = condition_form.hidden_field :classification_id, #{condition.classification.id}
+      = condition_form.hidden_field :category, #{condition.category}
     .left_field
       = condition_form.label :present
     .right_field

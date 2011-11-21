@@ -1,7 +1,7 @@
 class CreatePrescriptions < ActiveRecord::Migration
   def self.up
     create_table :prescriptions do |t|
-      t.integer :patient_id
+      t.integer :consultation_id
       t.integer :drug_id
       t.string :prescribed
       t.date :prescribed_date

@@ -1,11 +1,11 @@
 = fields_for "consultation[treatments_attributes][]", treatment do |treatment_form|
   %tr
-    %td.table_side_title 
+    %td.table_side_title
       = treatment.therapy.name
       = treatment_form.hidden_field :therapy_id, #{treatment.therapy.id}
     %td
       = treatment_form.select :treated, @options, :prompt => "Select one"
     %td
-      = treatment_form.date_select :date_start, :index => treatment.id || "", :include_blank => :true
+      = treatment_form.date_select :date_start, :index => treatment.id || "", :order => [:day, :month, :year], :include_blank => :true   
     %td
-      = treatment_form.date_select :date_end, :index => treatment.id || "", :include_blank => :true
+      = treatment_form.date_select :date_end, :index => treatment.id || "", :order => [:day, :month, :year], :include_blank => :true

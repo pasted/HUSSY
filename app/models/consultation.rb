@@ -54,20 +54,37 @@ class Consultation < ActiveRecord::Base
 	has_many :contacts, :through => :relationships
 	
 	
-	accepts_nested_attributes_for :patient
-	accepts_nested_attributes_for :medic
+	accepts_nested_attributes_for :patient, :reject_if => :all_blank
+	accepts_nested_attributes_for :medic, :reject_if => :all_blank, :allow_destroy => true
 	
-	accepts_nested_attributes_for :relationships, :allow_destroy => true
-	accepts_nested_attributes_for :physicals, :allow_destroy => true
-	accepts_nested_attributes_for :prescriptions, :allow_destroy => true
-	accepts_nested_attributes_for :investigations, :allow_destroy => true
-	accepts_nested_attributes_for :admissions, :allow_destroy => true
-	accepts_nested_attributes_for :conditions, :allow_destroy => true
-	accepts_nested_attributes_for :treatments, :allow_destroy => true
-	accepts_nested_attributes_for :outcomes, :allow_destroy => true
-	accepts_nested_attributes_for :travels, :allow_destroy => true
-	accepts_nested_attributes_for :referrals, :allow_destroy => true
-	accepts_nested_attributes_for :specimens, :allow_destroy => true
+	accepts_nested_attributes_for :relationships, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :physicals,  :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :prescriptions, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :investigations, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :admissions, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :conditions, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :treatments, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :outcomes, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :travels, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :referrals, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :specimens, :reject_if => :all_blank, :allow_destroy => true
+	
+	attr_accessible :consulted_date, :current_state, :traveled_recently, :notification, :notification_date, :notification_date_unknown
+	attr_accessible :patient_id, :medic_id, :admission_id, :user_id, :hospital_tokens
+	attr_accessible :medic_attributes, :admissions_attributes, :conditions_attributes, :investigations_attributes, :outcomes_attributes
+	attr_accessible :physicals_attributes, :prescriptions_attributes, :referrals_attributes, :relationships_attributes
+	attr_accessible :specimens_attributes, :travels_attributes, :treatments_attributes, :patient_attributes
+	
+	# hospital_tokens is used for tokeninput jquery plugin
+	# not implemented at the moment due difficulties in associating related parameters to the hospital_id param
+	attr_reader :hospital_tokens
+	
+	scope :with_historical_conditions, joins(:conditions) & Condition.historical
+	scope :with_present_conditions, joins(:conditions) & Condition.present
+	
+	def hospital_tokens=(ids)
+		self.hospital_ids = ids.split(",")	
+	end
 	
 	
 end

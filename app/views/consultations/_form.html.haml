@@ -24,12 +24,12 @@
           these_tabs.tabs('select', $(this).attr("rel"));
           return false;
           });
-    $( "#consultation_patient_date_of_death" ).datepicker();
-    $( "#consultation_notification_date" ).datepicker();
-    $( "#consultation_consulted_date" ).datepicker();
+    $( "#consultation_patient_date_of_death" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $( "#consultation_notification_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $( "#consultation_consulted_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
    
-    $( "#consultation_admissions_attributes_0_date_admitted" ).datepicker();
-    $( "#consultation_admissions_attributes_0_date_discharged" ).datepicker();
+    $( "#consultation_admissions_attributes_0_date_admitted" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $( "#consultation_admissions_attributes_0_date_discharged" ).datepicker({ dateFormat: 'dd-mm-yy' });
   });
   
 = form_for(@consultation) do |f|
@@ -62,10 +62,11 @@
         = f.label :consulted_date, "Consultation date"
       .right_field
         = f.text_field :consulted_date
-      .left_field
-        = f.label :current_state
-      .right_field
-        = f.select :current_state, Consultation::AVAILABLE_STATES, :prompt => "Select a status"
+      - if current_user.role?("ADMIN")
+        .left_field
+          = f.label :current_state
+        .right_field
+          = f.select :current_state, Consultation::AVAILABLE_STATES, :prompt => "Select a status"
       = render @consultation.medic
       %fieldset
         %legend Has the patient been referred to/from another centre?
@@ -74,6 +75,10 @@
         %legend Admission details
         = f.fields_for :admissions do |admission_form|
           .left_field
+            = admission_form.label :hospital_id, "Hospital"
+          .right_field 
+            = admission_form.collection_select(:hospital_id, Hospital.all, :id, :name, :prompt => true)
+          .left_field
             = admission_form.label :date_admitted
           .right_field
             = admission_form.text_field :date_admitted
@@ -81,10 +86,6 @@
             = admission_form.label :date_discharged
           .right_field
             = admission_form.text_field :date_discharged
-          .left_field
-            = admission_form.label :hospital_id
-          .right_field
-            = admission_form.select :hospital_id, options_from_collection_for_select(@hospitals, :id, :name)
           .left_field
             = admission_form.label :itu_admitted, "has this patient been admitted to ITU?"
           .right_field
@@ -103,18 +104,18 @@
           .left_field
             = patient_form.label :nhs_number
           .right_field
-            = patient_form.text_field :nhs_number_1, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_2')"
-            = patient_form.text_field :nhs_number_2, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_3')"
-            = patient_form.text_field :nhs_number_3, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_4')"
+            = patient_form.text_field :digit_1, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_2')"
+            = patient_form.text_field :digit_2, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_3')"
+            = patient_form.text_field :digit_3, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_4')"
             \-
-            = patient_form.text_field :nhs_number_4, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_5')"
-            = patient_form.text_field :nhs_number_5, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_6')"
-            = patient_form.text_field :nhs_number_6, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_7')"
+            = patient_form.text_field :digit_4, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_5')"
+            = patient_form.text_field :digit_5, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_6')"
+            = patient_form.text_field :digit_6, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_7')"
             \- 
-            = patient_form.text_field :nhs_number_7, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_8')"
-            = patient_form.text_field :nhs_number_8, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_9')"
-            = patient_form.text_field :nhs_number_9, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_nhs_number_10')"
-            = patient_form.text_field :nhs_number_10, :size => 1
+            = patient_form.text_field :digit_7, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_8')"
+            = patient_form.text_field :digit_8, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_9')"
+            = patient_form.text_field :digit_9, :size => 1, :onkeyup => "checkChar(1, this.id, 'consultation_patient_attributes_digit_10')"
+            = patient_form.text_field :digit_10, :size => 1
           .left_field
             = patient_form.label :initials
           .right_field
@@ -124,9 +125,9 @@
           .right_field
             = patient_form.text_field :postcode
           .left_field
-            = patient_form.label :town_of_birth
+            = patient_form.label :town_of_residence
           .right_field
-            = patient_form.text_field :town_of_birth
+            = patient_form.text_field :town_of_residence
           .left_field
             = patient_form.label :sex
           .right_field
@@ -170,6 +171,7 @@
         = render @historical_kidney_condition
         .left_field Were there any pre-existing urinary tract infection related problems?
         = render @historical_urinary_condition
+        = render :partial => 'conditions/condition', :collection => @consultation.conditions.where(:category => "historical"), :as => :condition
     #consultation_tabs_c
       %fieldset
         %legend List of contacts in the SAME household
@@ -191,11 +193,11 @@
         %legend Did the patient have any of the following conditions?
         %table
           = render :partial => "conditions/line_condition", :object => @present_fever_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_diarrhoea_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_vtec_stool_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_vtec_serology_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_abdominal_pain_condition, :as => :condition
-          = render  :partial => "conditions/line_condition", :object =>@present_bloody_diarrhoea_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object => @present_diarrhoea_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object => @present_vtec_stool_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object => @present_vtec_serology_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object => @present_abdominal_pain_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :object => @present_bloody_diarrhoea_condition, :as => :condition
       %fieldset
         %legend Has the patient developed any of the following?
         %table

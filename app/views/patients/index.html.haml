@@ -1,16 +1,15 @@
 %h1 Listing patients
 %table
   %tr
-    %th Current state
+    %th Id
     %th NHS number
     %th Initials
     %th Postcode
-    %th Town of birth
+    %th Town of residence
     %th Sex
     %th Year of birth
     %th Date of death
     %th Ethnicity
-    %th Ethnicity other
     %th User
     %th
     %th
@@ -18,18 +17,17 @@
     %th
   - @patients.each do |patient|
     %tr
-      %td= patient.current_state
+      %td= patient.id
       %td= patient.nhs_number
       %td= patient.initials
       %td= patient.postcode
-      %td= patient.town_of_birth
+      %td= patient.town_of_residence
       %td= patient.sex
       %td= patient.year_of_birth
       %td= patient.date_of_death
-      %td= patient.ethnicity_id
-      %td= patient.ethnicity_other
-      %td= patient.user_id
-      %td= link_to 'Consultation', new_consultation_path(:patient_id => patient.id)
+      %td= patient.ethnicity.description
+      %td= #{patient.user.first_name} #{patient.user.last_name} 
+      %td= link_to 'Questionnaire', new_consultation_path(:patient_id => patient.id)
       %td= link_to 'Show', patient
       %td= link_to 'Edit', edit_patient_path(patient)
       %td= link_to 'Destroy', patient, :confirm => 'Are you sure?', :method => :delete

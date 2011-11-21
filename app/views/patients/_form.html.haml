@@ -20,36 +20,36 @@
     .field
       = f.label :nhs_number, "NHS Number"
       %br/
-      = f.text_field :nhs_number_1, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_2')"
-      = f.text_field :nhs_number_2, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_3')"
-      = f.text_field :nhs_number_3, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_4')"
+      = f.text_field :digit_1, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_2')"
+      = f.text_field :digit_2, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_3')"
+      = f.text_field :digit_3, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_4')"
       \-
-      = f.text_field :nhs_number_4, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_5')"
-      = f.text_field :nhs_number_5, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_6')"
-      = f.text_field :nhs_number_6, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_7')"
+      = f.text_field :digit_4, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_5')"
+      = f.text_field :digit_5, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_6')"
+      = f.text_field :digit_6, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_7')"
       \- 
-      = f.text_field :nhs_number_7, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_8')"
-      = f.text_field :nhs_number_8, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_9')"
-      = f.text_field :nhs_number_9, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_nhs_number_10')"
-      = f.text_field :nhs_number_10, :size => 1
+      = f.text_field :digit_7, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_8')"
+      = f.text_field :digit_8, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_9')"
+      = f.text_field :digit_9, :size => 1, :onkeyup => "checkChar(1, this.id, 'patient_digit_10')"
+      = f.text_field :digit_10, :size => 1
     .field
       = f.label :initials
       %br/
       = f.text_field :initials
     .field
-      = f.label :postcode
+      = f.label :postcode, "Partial postcode e.g. NW5"
       %br/
       = f.text_field :postcode
     .field
-      = f.label :town_of_birth
+      = f.label :town_of_residence, "Current town of residence"
       %br/
-      = f.text_field :town_of_birth
+      = f.text_field :town_of_residence
     .field
       = f.label :sex
       %br/
       = f.select :sex, Patient::AVAILABLE_GENDERS
     .field
-      = f.label :year_of_birth
+      = f.label :year_of_birth, "Year of birth (YYYY)"
       %br/
       = f.text_field :year_of_birth
     .field
@@ -65,7 +65,7 @@
       %br/
       = f.text_field :cause_of_death
     .field
-      = f.label :dod_unknown
+      = f.label :dod_unknown, "Date of death unknown"
       %br/
       = f.check_box :dod_unknown
     .field

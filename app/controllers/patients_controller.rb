@@ -6,10 +6,19 @@ class PatientsController < ApplicationController
   end
   
   def search
-  	  if params[:nhs_number_1].to_i && params[:nhs_number_2].to_i && params[:nhs_number_3].to_i && params[:nhs_number_4].to_i && params[:nhs_number_5].to_i
-  	  	if params[:nhs_number_6].to_i && params[:nhs_number_7].to_i && params[:nhs_number_8].to_i && params[:nhs_number_9].to_i && params[:nhs_number_10].to_i
-  	  	  nhs_number = params[:nhs_number_1] << params[:nhs_number_2] << params[:nhs_number_3] << params[:nhs_number_4] << params[:nhs_number_5]
-  	  	  nhs_number << params[:nhs_number_6] << params[:nhs_number_7] << params[:nhs_number_8] << params[:nhs_number_9] << params[:nhs_number_10]
+  	  if params[:digit_1].to_i && params[:digit_2].to_i && params[:digit_3].to_i && params[:digit_4].to_i && params[:digit_5].to_i
+  	  	  if params[:digit_6].to_i && params[:digit_7].to_i && params[:digit_8].to_i && params[:digit_9].to_i && params[:digit_10].to_i
+  	  	  	  nhs_number = ""
+  	  	  	  nhs_number << params[:digit_1]
+  	  	  	  nhs_number << params[:digit_2]
+  	  	  	  nhs_number << params[:digit_3]
+  	  	  	  nhs_number << params[:digit_4]
+  	  	  	  nhs_number << params[:digit_5]
+  	  	  	  nhs_number << params[:digit_6]
+  	  	  	  nhs_number << params[:digit_7]
+  	  	  	  nhs_number << params[:digit_8]
+  	  	  	  nhs_number << params[:digit_9]
+  	  	  	  nhs_number << params[:digit_10]
   	  	end
   	  end
   	  initials = params[:initials]
@@ -37,7 +46,9 @@ class PatientsController < ApplicationController
   	  
 	  respond_to do |format|
 	  	  if (@patients.length == 0) && (params_check == true)
-		 	@patient = Patient.new
+		 	@patient = Patient.new(params)
+		 	@patient.make_nhs_number
+		 	@patient.split_nhs_number
 		 	@ethnicities = Ethnicity.all
 		 	@states = Patient::AVAILABLE_STATES
 		      	format.html { render :action => "new" } # new.html.erb
@@ -53,7 +64,12 @@ class PatientsController < ApplicationController
   # GET /patients
   # GET /patients.xml
   def index
-    @patients = Patient.all
+    
+    if current_user.role?('ADMIN')
+      @patients = Patient.all   
+    else
+      @patients = Patient.where(:user_id => current_user.id)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -64,6 +80,7 @@ class PatientsController < ApplicationController
   # GET /patients/1
   # GET /patients/1.xml
   def show
+
     @patient = Patient.find(params[:id])
 
     respond_to do |format|

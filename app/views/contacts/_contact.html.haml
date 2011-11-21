@@ -1,9 +1,13 @@
 - prefix = "consultation[relationships_attributes][][contact_attributes]"
 = fields_for prefix, contact do |contact_fields|
   .left_field
-    = contact_fields.label :name, "Name of contact"
+    = contact_fields.label :gender, "Gender of contact"
   .right_field
-    = contact_fields.text_field :name
+    = contact_fields.text_field :gender
+  .left_field
+    = contact_fields.label :year_of_birth, "Birth-year of contact"
+  .right_field
+    = contact_fields.text_field :year_of_birth
   .left_field
     = contact_fields.label :bloody_diarrhoea, "Bloody diarrhoea or diarrhoea within the last two weeks?"
   .right_field

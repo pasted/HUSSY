@@ -1,43 +1,46 @@
 %p#notice= notice
-%p
-  %b Current state:
-  = @patient.current_state
-%p
-  %b NHS number:
-  = @patient.nhs_number
-%p
-  %b Initials:
-  = @patient.initials
-%p
-  %b Postcode:
-  = @patient.postcode
-%p
-  %b Town of birth:
-  = @patient.town_of_birth
-%p
-  %b Sex:
-  = @patient.sex
-%p
-  %b Year of birth:
-  = @patient.year_of_birth
-%p
-  %b Date of death:
-  = @patient.date_of_death
-%p
-  %b Cause of death:
-  = @patient.cause_of_death
-%p
-  %b Dod unknown:
-  = @patient.dod_unknown
-%p
-  %b Ethnicity:
-  = @patient.ethnicity_id
-%p
-  %b Ethnicity other:
-  = @patient.ethnicity_other
-%p
-  %b User:
-  = @patient.user_id
+%fieldset
+  %legend Patient #{h @patient.id}
+  .left_field Current state
+  .right_field
+    = @patient.current_state
+  .left_field NHS number
+  .right_field
+    = @patient.nhs_number
+  .left_field Initials
+  .right_field
+    = @patient.initials
+  .left_field Postcode
+  .right_field
+    = @patient.postcode
+  .left_field Town of residence
+  .right_field
+    = @patient.town_of_residence
+  .left_field Sex
+  .right_field
+    = @patient.sex
+  .left_field Year of birth
+  .right_field
+    = @patient.year_of_birth
+  .left_field Date of death
+  .right_field
+    = @patient.date_of_death
+  .left_field Cause of death
+  .right_field
+    = @patient.cause_of_death
+  .left_field Date of death unknown
+  .right_field
+    = @patient.dod_unknown
+  .left_field Ethnicity
+  .right_field
+    = @patient.ethnicity.description
+  .left_field Ethnicity other
+  .right_field
+    = @patient.ethnicity_other
+  .left_field Submitter
+  .right_field #{h @patient.user.full_name}
+= link_to 'New questionnaire', new_consultation_path(:patient_id => @patient.id)
+|
 = link_to 'Edit', edit_patient_path(@patient)
 |
 \#{link_to 'Back', patients_path}

@@ -1,24 +1,25 @@
 Hussy::Application.routes.draw do
 
-  resources :referrals
 
-  resources :results
-
-  resources :therapies
-
+  root :to => "pages#show", :controller => :page, :action => :show, :name => "welcome"
+  #resources :users
+  
   devise_for :users
-  post "/users/sign_in"    => "sessions#create"
-  delete "/users/sign_out" => "devise/sessions#destroy"
+  #match "/users" => "users#index", :as => :index
+  #post "/users/sign_in"    => "sessions#create"
+  #delete "/users/sign_out" => "sessions#destroy"
+  resources :users, :only => [:index, :show, :edit, :update]
+  devise_scope :user do
+ 	 get "sign_up" => "users/registrations#new"
+ 	 post "users/registrations/create" => "users/registrations#create"
+ 	 post "users/registrations/edit" => "users/registrations#edit"
+ 	
+  end
   
-  #devise_scope :user do
- 	 # get "sign_up" => "users/registrations#new"
- 	 #get "users/sign_out" => "devise/sessions#destroy"
-  #end
-  
-  match "/users" => "users#index", :as => :index
-  
-  resources :users
-  
+  match 'admin', :controller => 'pages', :action => 'admin_section'
+  match 'search_form', :controller => 'patients', :action => 'search_form'
+  match 'search', :controller => 'patients', :action=> 'search'
+   
  # match "/users/show(.:format)" => "users#show", :as => :user
   
   #namespace :users do
@@ -57,11 +58,11 @@ Hussy::Application.routes.draw do
   
   resources :treatments
   
-  match 'admin', :controller => 'pages', :action => 'admin_section'
-  match 'search_form', :controller => 'patients', :action => 'search_form'
-  match 'search', :controller => 'patients', :action=> 'search'
-  
-  root :to => "pages#show", :controller => :page, :action => :show, :name => "welcome"
+  resources :referrals
+
+  resources :results
+
+  resources :therapies
 
 
   # The priority is based upon order of creation:

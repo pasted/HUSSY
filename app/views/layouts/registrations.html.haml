@@ -6,31 +6,20 @@
     = stylesheet_link_tag :all
     = javascript_include_tag :defaults
     :javascript
-	  var $j = jQuery.noConflict();
-	  
-	  $j(document).ready( function() {
-
-				//ADVANCED
-				$j(".password_check").passStrength({
-					shortPass: 		"top_shortPass",
-					badPass:		"top_badPass",
-					goodPass:		"top_goodPass",
-					strongPass:		"top_strongPass",
-					baseStyle:		"top_testresult",
-					userid:			"#user_email"
-				});
-				
-				
-
-
-
-	  });
-			
-        = csrf_meta_tag
+      var $j = jQuery.noConflict();
+      $j(document).ready( function() {
+        $j(".password_check").passStrength({
+        shortPass:  "top_shortPass",
+	badPass:  "top_badPass",
+	goodPass:  "top_goodPass",
+	strongPass:  "top_strongPass",
+	baseStyle:  "top_testresult",
+	userid:  "#user_email"
+        });
+      });		
+    = csrf_meta_tag
     %meta{:content => "Garan Jones", :name => "author"}/
   %body
-    **
-    
     \#{render :partial => "shards/header"}
     #main-content
       = yield

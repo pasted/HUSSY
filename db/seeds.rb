@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
+
+#Add password before seeding the database
+#default admin account
+User.create([ :first_name => 'Garan', :last_name => 'Jones', :email => 'garan.jones@hpa.org.uk', :password => '*', :current_state => 'active'])

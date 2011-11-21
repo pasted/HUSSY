@@ -1,8 +1,9 @@
 = fields_for "consultation[conditions_attributes][]", condition do |condition_form|
   %tr
     %td.table_side_title 
-      = condition.classification.name
+      = condition.classification ? condition.classification.name : "None given"
       = condition_form.hidden_field :classification_id, #{condition.classification.id}
+      = condition_form.hidden_field :category, #{condition.category}
     %td
       = condition_form.select :present, @options, :prompt => "Select one"
     %td
