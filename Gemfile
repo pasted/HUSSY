@@ -19,11 +19,11 @@ group :test do
 end
 group :development, :test do
 	gem 'rspec-rails'
-	gem 'hpricot'
         gem 'ruby_parser'
 	#gem 'railroady'
 end
 
+gem 'hpricot'
 gem "ZenTest", "~> 4.4.2"
 gem "autotest-rails", "~> 4.1.0"
 
