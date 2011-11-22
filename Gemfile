@@ -10,8 +10,8 @@ gem 'simple-navigation'
 #gem 'sqlite3'
 #gem 'pg', :require => 'pg'
 
-#Using mySQL adapter for Engineyard
-gem 'mysql2'
+#Using mySQL adapter for Engineyard - versions before 0.3 for Rails < 3.1
+gem 'mysql2', '< 0.3'
 
 #gem 'rspec-rails', :group => [:test, :development]
 
