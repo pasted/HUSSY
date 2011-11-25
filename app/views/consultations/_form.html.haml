@@ -182,34 +182,18 @@
     #consultation_tabs_d
       %fieldset
         %legend Investigations observed
-        = render @reduced_heamoglobin_investigation
-        = render @reduced_platelet_investigation
-        = render @elevated_creatinine_investigation
-        = render @rbc_fragmentation_investigation
+        = render :partial => "investigations/investigation", :collection => @investigation_list, :as => :investigation
       %fieldset
         %legend Was HUS specifically diagnosed?
         = render @present_hus_condition
       %fieldset
         %legend Did the patient have any of the following conditions?
         %table
-          = render :partial => "conditions/line_condition", :object => @present_fever_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object => @present_diarrhoea_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object => @present_vtec_stool_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object => @present_vtec_serology_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object => @present_abdominal_pain_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object => @present_bloody_diarrhoea_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :collection => @condition_list_a, :as => :condition
       %fieldset
         %legend Has the patient developed any of the following?
         %table
-          = render :partial => "conditions/line_condition", :object =>@present_oligo_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_septicaemia_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_hypertension_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_haemorrhage_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_seizures_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_cardiomyopathy_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_diabetes_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_influenza_condition, :as => :condition
-          = render :partial => "conditions/line_condition", :object =>@present_pneumo_condition, :as => :condition
+          = render :partial => "conditions/line_condition", :collection => @condition_list_b, :as => :condition
     #consultation_tabs_e
       %fieldset
         %legend Microbiology laboratory investigations
@@ -237,12 +221,7 @@
           %th.clear
           %th Present?
           %th Details
-          = render :partial => "outcomes/line_outcome", :object =>@present_full_recovery_outcome, :as => :outcome
-          = render :partial => "outcomes/line_outcome", :object =>@present_dialysis_dependent_outcome, :as => :outcome
-          = render :partial => "outcomes/line_outcome", :object =>@present_renal_impairment_outcome, :as => :outcome
-          = render :partial => "outcomes/line_outcome", :object =>@present_neurological_impairment_outcome, :as => :outcome
-          = render :partial => "outcomes/line_outcome", :object =>@present_hypertension_treatment_outcome, :as => :outcome
-          = render :partial => "outcomes/line_outcome", :object =>@present_other_outcome, :as => :outcome
+          = render :partial => "outcomes/line_outcome", :collection => @outcome_list, :as => :outcome
       %fieldset
         %legend Patient status
         = render :partial => "patients/status", :object =>@patient, :as => :patient

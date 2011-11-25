@@ -89,9 +89,9 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    mysql2 (0.2.17)
     nokogiri (1.5.0)
     orm_adapter (0.0.5)
+    pg (0.11.0)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.2)
@@ -183,7 +183,7 @@ DEPENDENCIES
   hpricot
   jquery-rails
   libnotify
-  mysql2 (< 0.3)
+  pg
   rails (= 3.0.10)
   ransack
   rb-inotify

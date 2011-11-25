@@ -8,10 +8,10 @@ gem 'simple-navigation'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #gem 'sqlite3'
-#gem 'pg', :require => 'pg'
+gem 'pg', :require => 'pg'
 
 #Using mySQL adapter for Engineyard - versions before 0.3 for Rails < 3.1
-gem 'mysql2', '< 0.3'
+#gem 'mysql2', '< 0.3'
 
 #gem 'rspec-rails', :group => [:test, :development]
 

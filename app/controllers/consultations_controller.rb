@@ -146,9 +146,9 @@ class ConsultationsController < ApplicationController
     @historical_kidney_condition.category = "historical"
     @historical_urinary_condition.category = "historical"
     
-    @historical_hus_classification = Classification.find_by_name("Haemolytic-Uraemic Syndrome")
-    @historical_kidney_classification = Classification.find_by_name("Kidney disease")
-    @historical_urinary_classification = Classification.find_by_name("Urinary tract infection")
+    @historical_hus_classification = Classification.find_by_name("Heamolytic Ureamic Syndrome")
+    @historical_kidney_classification = Classification.find_by_name("Pre-existing kidney disease")
+    @historical_urinary_classification = Classification.find_by_name("Pre-existing urinary tract infection")
     
     @historical_hus_condition.classification = @historical_hus_classification
     @historical_kidney_condition.classification = @historical_kidney_classification
@@ -158,124 +158,61 @@ class ConsultationsController < ApplicationController
     @consultation.conditions.push(@historical_hus_condition)
     @consultation.conditions.push(@historical_kidney_condition)
     @consultation.conditions.push(@historical_urinary_condition)
-    
-    
+      
     
     #Section D : Clinical features
     #Investigations
     #Pre-build to populate the list with all relevant Assays
-    #Could save time by just iterating over Assay.all array but instead exclusively picking the Assays mentioned (in case new Assays added later)
     #Needs to be refactored - move into the models
-    @reduced_heamoglobin_investigation = Investigation.new
-    @reduced_platelet_investigation = Investigation.new
-    @elevated_creatinine_investigation = Investigation.new
-    @rbc_fragmentation_investigation = Investigation.new
     
-    @reduced_heamoglobin_assay = Assay.find_by_name("Reduced haemoglobin")
-    @reduced_platelet_assay = Assay.find_by_name("Reduced platelet count")
-    @elevated_creatinine_assay = Assay.find_by_name("Elevated plasma creatinine")
-    @rbc_fragmentation_assay = Assay.find_by_name("Red blood cell fragmentation")
+    assay_list = ["Reduced haemoglobin", "Reduced platelet count", "Elevated plasma creatinine", "Red blood cell fragmentation"]
+    @investigation_list = Array.new
     
-    @reduced_heamoglobin_investigation.assay = @reduced_heamoglobin_assay
-    @reduced_platelet_investigation.assay = @reduced_platelet_assay
-    @elevated_creatinine_investigation.assay = @elevated_creatinine_assay
-    @rbc_fragmentation_investigation.assay = @rbc_fragmentation_assay
-    
-    @consultation.investigations.push(@reduced_heamoglobin_investigation)
-    @consultation.investigations.push(@reduced_platelet_investigation)
-    @consultation.investigations.push(@elevated_creatinine_investigation)
-    @consultation.investigations.push(@rbc_fragmentation_investigation)
+    assay_list.each do |assay_name|
+    	    this_assay = Assay.find_by_name(assay_name)   
+    	    if this_assay
+    	    	    this_investigation = Investigation.new    
+    	    	    this_investigation.assay = this_assay
+    	    	    @consultation.investigations.push(this_investigation)
+    	    	    @investigation_list.push(this_investigation)
+    	    end
+    end
     
     #Setup the default Conditions for the present consultation
-    @present_hus_condition = Condition.new
-    @present_fever_condition = Condition.new 
-    @present_oligo_condition = Condition.new
-    @present_diarrhoea_condition = Condition.new
-    @present_vtec_stool_condition = Condition.new
-    @present_haemorrhage_condition = Condition.new
-    @present_septicaemia_condition = Condition.new
-    @present_hypertension_condition = Condition.new
-    @present_vtec_serology_condition = Condition.new
-    @present_abdominal_pain_condition = Condition.new
-    @present_bloody_diarrhoea_condition = Condition.new
     
-    @present_seizures_condition = Condition.new
-    @present_cardiomyopathy_condition = Condition.new
-    @present_diabetes_condition = Condition.new
-    @present_influenza_condition = Condition.new
-    @present_pneumo_condition = Condition.new
+    klassification_list_a = ['Diarrhoea','Bloody diarrhoea', 'Fever', 'Abdominal pain']
+    klassification_list_b = ['Oligo/anuria', 'Septicaemia', 'Malignant hypertension', 'Major haemorrhage', 'Seizures and other neurological involvement', 'Cardiomopathy', 'Diabetes mellitus', 'Influenza-like illness', 'Pneumococcus infection']
     
-    @present_hus_condition.category = "present"
-    @present_fever_condition.category = "present"
-    @present_oligo_condition.category = "present"
-    @present_diarrhoea_condition.category = "present"
-    @present_vtec_stool_condition.category = "present"
-    @present_haemorrhage_condition.category = "present"
-    @present_septicaemia_condition.category = "present"
-    @present_hypertension_condition.category = "present"
-    @present_vtec_serology_condition.category = "present"
-    @present_abdominal_pain_condition.category = "present"
-    @present_bloody_diarrhoea_condition.category = "present"
+    @condition_list_a = Array.new
+    @condition_list_b = Array.new
     
-    @present_seizures_condition.category = "present"
-    @present_cardiomyopathy_condition.category = "present"
-    @present_diabetes_condition.category = "present"
-    @present_influenza_condition.category = "present"
-    @present_pneumo_condition.category = "present"
+    klassification_list_a.each do |klassification_name|
+    	    this_klassification = Classification.find_by_name(klassification_name)   
+    	    if this_klassification
+    	    	    this_condition = Condition.new    
+    	    	    this_condition.category = "present"
+    	    	    this_condition.classification = this_klassification
+    	    	    @consultation.conditions.push(this_condition)
+    	    	    @condition_list_a.push(this_condition)
+    	    end
+    end
+   
+    klassification_list_b.each do |klassification_name|
+    	    this_klassification = Classification.find_by_name(klassification_name)   
+    	    if this_klassification
+    	    	    this_condition = Condition.new    
+    	    	    this_condition.category = "present"
+    	    	    this_condition.classification = this_klassification
+    	    	    @consultation.conditions.push(this_condition)
+    	    	    @condition_list_b.push(this_condition)
+    	    end
+    end
     
-    @present_hus_classification = Classification.find_by_name('Haemolytic-Uraemic Syndrome')
-    @present_fever_classification = Classification.find_by_name('Fever') 
-    @present_oligo_classification = Classification.find_by_name('Oligo/anuria') 
-    @present_diarrhoea_classification = Classification.find_by_name('Diarrhoea')
-    @present_vtec_stool_classification = Classification.find_by_name('Confirmed VTEC infection by stool sample')
-    @present_haemorrhage_classification = Classification.find_by_name('Major haemorrhage')
-    @present_septicaemia_classification = Classification.find_by_name('Septicaemia')
-    @present_hypertension_classification = Classification.find_by_name('Malignant hypertension')
-    @present_vtec_serology_classification = Classification.find_by_name('Confirmed VTEC infection by serology')
-    @present_abdominal_pain_classification = Classification.find_by_name('Abdominal pain')
-    @present_bloody_diarrhoea_classification = Classification.find_by_name('Bloody Diarrhoea')
-    
-    @present_seizures_classification = Classification.find_by_name('Seizures and other neurological involvement')
-    @present_cardiomyopathy_classification = Classification.find_by_name('Cardiomyopathy')
-    @present_diabetes_classification = Classification.find_by_name('Diabetes mellitus')
-    @present_influenza_classification = Classification.find_by_name('Influenza-like illness')
-    @present_pneumo_classification = Classification.find_by_name('Pneumococcus infection')
-    
-    @present_hus_condition.classification = @present_hus_classification
-    @present_fever_condition.classification = @present_fever_classification
-    @present_oligo_condition.classification = @present_oligo_classification
-    @present_diarrhoea_condition.classification = @present_diarrhoea_classification
-    @present_vtec_stool_condition.classification = @present_vtec_stool_classification
-    @present_haemorrhage_condition.classification = @present_haemorrhage_classification
-    @present_septicaemia_condition.classification = @present_septicaemia_classification
-    @present_hypertension_condition.classification = @present_hypertension_classification
-    @present_vtec_serology_condition.classification = @present_vtec_serology_classification
-    @present_abdominal_pain_condition.classification =  @present_abdominal_pain_classification
-    @present_bloody_diarrhoea_condition.classification = @present_bloody_diarrhoea_classification
-    
-    @present_seizures_condition.classification = @present_seizures_classification
-    @present_cardiomyopathy_condition.classification = @present_cardiomyopathy_classification
-    @present_diabetes_condition.classification = @present_diabetes_classification
-    @present_influenza_condition.classification = @present_influenza_classification
-    @present_pneumo_condition.classification = @present_pneumo_classification
-    
+    @present_hus_condition = Condition.new    
+    @present_hus_condition.category = "present"    
+    @present_hus_classification = Classification.find_by_name('Heamolytic Ureamic Syndrome')    
+    @present_hus_condition.classification = @present_hus_classification    
     @consultation.conditions.push(@present_hus_condition)
-    @consultation.conditions.push(@present_fever_condition)
-    @consultation.conditions.push(@present_oligo_condition)
-    @consultation.conditions.push(@present_diarrhoea_condition)
-    @consultation.conditions.push(@present_vtec_stool_condition)
-    @consultation.conditions.push(@present_haemorrhage_condition)
-    @consultation.conditions.push(@present_septicaemia_condition)
-    @consultation.conditions.push(@present_hypertension_condition)
-    @consultation.conditions.push(@present_vtec_serology_condition)
-    @consultation.conditions.push(@present_abdominal_pain_condition)
-    @consultation.conditions.push(@present_bloody_diarrhoea_condition)
-
-    @consultation.conditions.push(@present_seizures_condition)
-    @consultation.conditions.push(@present_cardiomyopathy_condition)
-    @consultation.conditions.push(@present_diabetes_condition)
-    @consultation.conditions.push(@present_influenza_condition)
-    @consultation.conditions.push(@present_pneumo_condition)
     
     #Section F : Management
     #List of drugs prescribed in the management section
@@ -303,33 +240,18 @@ class ConsultationsController < ApplicationController
     end
     
     #Section G : Outcome by discharge
-    @present_full_recovery_outcome = Outcome.new
-    @present_dialysis_dependent_outcome = Outcome.new
-    @present_renal_impairment_outcome = Outcome.new
-    @present_neurological_impairment_outcome = Outcome.new
-    @present_hypertension_treatment_outcome = Outcome.new
-    @present_other_outcome = Outcome.new
+    result_list = ["Seemingly full recovery", "Dialysis dependent", "Renal impairment", "Neurological impairment", "Continued treatment for hypertension", "Any other"]
+    @outcome_list = Array.new
     
-    @full_recovery_result = Result.find_by_name("Seemingly full recovery")
-    @dialysis_dependent_result = Result.find_by_name("Dialysis dependent")
-    @renal_impairment_result = Result.find_by_name("Renal impairment")
-    @neurological_impairment_result = Result.find_by_name("Neurological impairment")
-    @hypertension_treatment_result = Result.find_by_name("Continued treatment for hypertension")
-    @other_result = Result.find_by_name("Any other")
-    
-    @present_full_recovery_outcome.result = @full_recovery_result
-    @present_dialysis_dependent_outcome.result = @dialysis_dependent_result
-    @present_renal_impairment_outcome.result = @renal_impairment_result
-    @present_neurological_impairment_outcome.result = @neurological_impairment_result
-    @present_hypertension_treatment_outcome.result = @hypertension_treatment_result
-    @present_other_outcome.result = @other_result
-    
-    @consultation.outcomes.push(@present_full_recovery_outcome)
-    @consultation.outcomes.push(@present_dialysis_dependent_outcome)
-    @consultation.outcomes.push(@present_renal_impairment_outcome)
-    @consultation.outcomes.push(@present_neurological_impairment_outcome)
-    @consultation.outcomes.push(@present_hypertension_treatment_outcome)
-    @consultation.outcomes.push(@present_other_outcome)
+    result_list.each do |outcome_name|
+    	    this_result = Result.find_by_name(outcome_name)   
+    	    if this_result
+    	    	    this_outcome = Outcome.new    
+    	    	    this_outcome.result = this_result
+    	    	    @consultation.outcomes.push(this_outcome)
+    	    	    @outcome_list.push(this_outcome)
+    	    end
+    end
     
     respond_to do |format|
       format.html # new.html.erb

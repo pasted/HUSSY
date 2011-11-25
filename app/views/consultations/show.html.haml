@@ -157,6 +157,7 @@
         = this_condition.comment
 %fieldset
   %legend Contacts
+  = @consultation.relationships.inspect
   - @consultation.relationships.each do |this_relationship|
     %fieldset
       .left_field Relationship to patient

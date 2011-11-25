@@ -57,7 +57,7 @@ class Consultation < ActiveRecord::Base
 	accepts_nested_attributes_for :patient, :reject_if => :all_blank
 	accepts_nested_attributes_for :medic, :reject_if => :all_blank, :allow_destroy => true
 	
-	accepts_nested_attributes_for :relationships, :reject_if => :all_blank, :allow_destroy => true
+	accepts_nested_attributes_for :relationships, :reject_if => proc { |attributes| attributes['category'].blank? }, :allow_destroy => true
 	accepts_nested_attributes_for :physicals,  :reject_if => :all_blank, :allow_destroy => true
 	accepts_nested_attributes_for :prescriptions, :reject_if => :all_blank, :allow_destroy => true
 	accepts_nested_attributes_for :investigations, :reject_if => :all_blank, :allow_destroy => true
