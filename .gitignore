@@ -1,1 +1,5 @@
 .svn
+.rvmrc
+log/*
+config/database.yml
+Rakefile
